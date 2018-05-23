@@ -526,6 +526,10 @@ public class GUIPrincipal {
 		JTextArea txtDescripcion = new JTextArea();
 		txtDescripcion.setBounds(732, 230, 274, 192);
 		panelDatosIngresarVideojuego.add(txtDescripcion);
+
+		
+		// -------------------- BOTON CANCELAR AGREGAR VIDEOJUEGO --------------------
+		
 		
 		Button btnCancelarAgregarVideojuego = new Button("Cancelar");
 		btnCancelarAgregarVideojuego.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -534,6 +538,10 @@ public class GUIPrincipal {
 		btnCancelarAgregarVideojuego.setBounds(731, 439, 99, 34);
 		panelDatosIngresarVideojuego.add(btnCancelarAgregarVideojuego);
 		
+		
+		// -------------------- BOTON AGREGAR VIDEOJUEGO --------------------
+		
+				
 		Button btnAgregarVideojuego = new Button("Agregar Videojuego");
 		btnAgregarVideojuego.setBackground(new Color(255, 140, 0));
 		btnAgregarVideojuego.setFont(new Font("Dialog", Font.BOLD, 13));
