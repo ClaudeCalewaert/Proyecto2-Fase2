@@ -16,7 +16,7 @@ public class OperacionesDb
 	
 	public GraphDatabaseService crearConexionDb() {
 		
-		File graphDbPath = new File("Proyecto Fase 2\\Proyecto2\\DB -neo4j-community-3.3.5\\data\\databases\\graph.db");
+		File graphDbPath = new File("Proyecto2-Fase2\\Proyecto2\\DB -neo4j-community-3.3.5\\data\\databases\\graph.db");
 		GraphDatabaseFactory graphFactory = new GraphDatabaseFactory();
 		GraphDatabaseService graphDB = graphFactory.newEmbeddedDatabase(graphDbPath);
 		
