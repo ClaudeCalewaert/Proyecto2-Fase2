@@ -2,6 +2,8 @@ package com.calewaert.proyecto2.Proyecto2;
 
 import java.io.File;
 
+import javax.swing.JFrame;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
@@ -16,7 +18,7 @@ public class OperacionesDb
 	
 	public GraphDatabaseService crearConexionDb() {
 		
-		File graphDbPath = new File("Proyecto2-Fase2\\Proyecto2\\DB -neo4j-community-3.3.5\\data\\databases\\graph.db");
+		File graphDbPath = new File("DB -neo4j-community-3.3.5\\data\\databases\\graph.db");
 		GraphDatabaseFactory graphFactory = new GraphDatabaseFactory();
 		GraphDatabaseService graphDB = graphFactory.newEmbeddedDatabase(graphDbPath);
 		
@@ -25,7 +27,7 @@ public class OperacionesDb
 	
 	// --------------------------------------------- CERRAR CONEXION DB -------------------------------------------------------------
 	 
-	 public static void registerShutdownHook( final GraphDatabaseService graphDb )
+	 public int cerrarConexion( final GraphDatabaseService graphDb )
 	 {
 	     // Registers a shutdown hook for the Neo4j instance so that it
 	     // shuts down nicely when the VM exits (even if you "Ctrl-C" the
@@ -38,6 +40,10 @@ public class OperacionesDb
 	             graphDb.shutdown();
 	         }
 	     } );
+	     
+
+	     return JFrame.DISPOSE_ON_CLOSE;
+	    
 	 }
 	 
 	 // ------- FIN -------
