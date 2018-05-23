@@ -17,6 +17,8 @@ import java.awt.Label;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class GUIPrincipal {
 
@@ -91,33 +93,20 @@ public class GUIPrincipal {
 		panelDatosMenuPrincipal.setBounds(0, 94, 1034, 434);
 		lPanelMenuPrincipal.add(panelDatosMenuPrincipal);
 		panelDatosMenuPrincipal.setLayout(null);
-		
-		
-		
-		// -------------------- BOTON OPCION AGREGAR VIDEOJUEGO --------------------
-		
-		
+
 		Button btnOpcionAgregarVideojuego = new Button("Agregar videojuego");
 		btnOpcionAgregarVideojuego.setBackground(Color.DARK_GRAY);
 		btnOpcionAgregarVideojuego.setForeground(Color.WHITE);
 		btnOpcionAgregarVideojuego.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnOpcionAgregarVideojuego.setBounds(47, 76, 263, 46);
 		panelDatosMenuPrincipal.add(btnOpcionAgregarVideojuego);
-		
-		
-		// -------------------- BOTON OPCION ELIMINAR VIDEOJUEGO --------------------
-		
-		
+	
 		Button btnOpcionEliminarVideojuego = new Button("Eliminar videojuego");
 		btnOpcionEliminarVideojuego.setForeground(Color.WHITE);
 		btnOpcionEliminarVideojuego.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnOpcionEliminarVideojuego.setBackground(Color.DARK_GRAY);
 		btnOpcionEliminarVideojuego.setBounds(47, 155, 263, 46);
 		panelDatosMenuPrincipal.add(btnOpcionEliminarVideojuego);
-		
-		
-		// -------------------- BOTON OPCION AGREGAR USUARIO --------------------
-		
 		
 		Button btnOpcionAgregarUsuario = new Button("Agregar usuario");
 		btnOpcionAgregarUsuario.setForeground(Color.WHITE);
@@ -126,18 +115,12 @@ public class GUIPrincipal {
 		btnOpcionAgregarUsuario.setBounds(47, 233, 263, 46);
 		panelDatosMenuPrincipal.add(btnOpcionAgregarUsuario);
 		
-		
-		// -------------------- BOTON OPCION ELIMINAR USUARIO --------------------
-		
-		
 		Button btnOpcionEliminarUsuario = new Button("Eliminar usuario");
 		btnOpcionEliminarUsuario.setForeground(Color.WHITE);
 		btnOpcionEliminarUsuario.setFont(new Font("Dialog", Font.BOLD, 16));
 		btnOpcionEliminarUsuario.setBackground(Color.DARK_GRAY);
 		btnOpcionEliminarUsuario.setBounds(47, 308, 263, 46);
 		panelDatosMenuPrincipal.add(btnOpcionEliminarUsuario);
-		
-		// -------------------- OBTENER RECOMENDACION --------------------
 		
 		Button btnOpcionRecomendacion = new Button("Obtener recomendacion de videojuego");
 		btnOpcionRecomendacion.setForeground(Color.WHITE);
@@ -181,6 +164,7 @@ public class GUIPrincipal {
 		panelDatosIngresarVideojuego.add(lblTituloVideojuego);
 		
 		txtTituloVideojuego = new JTextField();
+		txtTituloVideojuego.setHorizontalAlignment(SwingConstants.CENTER);
 		txtTituloVideojuego.setBackground(Color.DARK_GRAY);
 		txtTituloVideojuego.setForeground(Color.WHITE);
 		txtTituloVideojuego.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -195,6 +179,7 @@ public class GUIPrincipal {
 		panelDatosIngresarVideojuego.add(lblAnoLanzamiento);
 		
 		txtAnoLanzamiento = new JTextField();
+		txtAnoLanzamiento.setHorizontalAlignment(SwingConstants.CENTER);
 		txtAnoLanzamiento.setForeground(Color.WHITE);
 		txtAnoLanzamiento.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtAnoLanzamiento.setColumns(10);
@@ -209,6 +194,7 @@ public class GUIPrincipal {
 		panelDatosIngresarVideojuego.add(lblRating);
 		
 		txtRating = new JTextField();
+		txtRating.setHorizontalAlignment(SwingConstants.CENTER);
 		txtRating.setForeground(Color.WHITE);
 		txtRating.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtRating.setColumns(10);
@@ -527,10 +513,6 @@ public class GUIPrincipal {
 		txtDescripcion.setBounds(732, 230, 274, 192);
 		panelDatosIngresarVideojuego.add(txtDescripcion);
 
-		
-		// -------------------- BOTON CANCELAR AGREGAR VIDEOJUEGO --------------------
-		
-		
 		Button btnCancelarAgregarVideojuego = new Button("Cancelar");
 		btnCancelarAgregarVideojuego.setFont(new Font("Dialog", Font.BOLD, 13));
 		btnCancelarAgregarVideojuego.setForeground(Color.WHITE);
@@ -538,10 +520,6 @@ public class GUIPrincipal {
 		btnCancelarAgregarVideojuego.setBounds(731, 439, 99, 34);
 		panelDatosIngresarVideojuego.add(btnCancelarAgregarVideojuego);
 		
-		
-		// -------------------- BOTON AGREGAR VIDEOJUEGO --------------------
-		
-				
 		Button btnAgregarVideojuego = new Button("Agregar Videojuego");
 		btnAgregarVideojuego.setBackground(new Color(255, 140, 0));
 		btnAgregarVideojuego.setFont(new Font("Dialog", Font.BOLD, 13));
@@ -549,15 +527,51 @@ public class GUIPrincipal {
 		btnAgregarVideojuego.setBounds(851, 438, 155, 34);
 		panelDatosIngresarVideojuego.add(btnAgregarVideojuego);
 		
+		
+		
+		// ----------------------------------------------------------------------------- ACCIONES BOTONES -------------------------------------------------------------
+		
+		
+		
+		// --------------------------------------------- MENU PRINCIPAL --------------------------------
+		
+		
+		// BOTON OPCION AGREGAR VIDEOJUEGOS
+		
+		btnOpcionAgregarVideojuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				// Ocultar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(false);
+				
+				// Mostrar elementos Agregar Videojuego
+				
+				lPanelAgregarVideojuego.setVisible(true);
+			}
+		});
+		
+		
+		// ------------------------------------------- AGREGAR VIDEOJUEGOS --------------------------------
+		
+		
+		// BOTON CANCELAR AGREGAR VIDEOJUEGOS
+		
+		btnCancelarAgregarVideojuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Ocultar elementos Agregar Videojuego
+				
+				lPanelAgregarVideojuego.setVisible(false);
+				
+				// Mostrar elementos Menu Principal
+				
 
+				lPanelMenuPrincipal.setVisible(true);
+				
+			}
+		});
 		
-		
-		
-		
-		
-		
-		
-	
 	
 	
 	}	
