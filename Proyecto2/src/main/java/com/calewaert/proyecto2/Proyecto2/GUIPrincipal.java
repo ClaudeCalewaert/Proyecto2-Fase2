@@ -10,6 +10,9 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import org.neo4j.graphdb.GraphDatabaseService;
+
 import javax.swing.JButton;
 import java.awt.Button;
 import java.awt.Panel;
@@ -27,7 +30,6 @@ public class GUIPrincipal {
 	private JTextField txtAnoLanzamiento;
 	private JTextField txtRating;
 
- 	
 	
 	/**
 	 * Launch the application.
@@ -64,8 +66,15 @@ public class GUIPrincipal {
 		jramePrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jramePrincipal.getContentPane().setBackground(new Color(128, 128, 128));
 		jramePrincipal.getContentPane().setLayout(new CardLayout(0, 0));
+	
+		// -------------------------------------------------------------- CONEXION Y OPERACIONES CON BASE DE DATOS -------------------------------------------------------------
 		
+		// Crear la clase de operaciones
+		OperacionesDb operaciones = new OperacionesDb();
 		
+		// Asignar la conexion a la base de datos a una variable
+		
+		GraphDatabaseService graphDb = operaciones.crearConexionDb();
 		
 		// ----------------------------------------------------------------------------- MENU PRINCIPAL -------------------------------------------------------------
 		
@@ -572,7 +581,14 @@ public class GUIPrincipal {
 			}
 		});
 		
-	
-	
+		// BOTON AGREGAR VIDEOJUEGO
+		
+		btnAgregarVideojuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
 	}	
 }
