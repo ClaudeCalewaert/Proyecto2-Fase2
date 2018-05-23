@@ -61,7 +61,7 @@ public class GUIPrincipal {
 		jramePrincipal = new JFrame();
 		jramePrincipal.setResizable(false);
 		jramePrincipal.setFont(new Font("Arial", Font.PLAIN, 20));
-		jramePrincipal.setTitle("GRU");
+		jramePrincipal.setTitle("GRE");
 		jramePrincipal.setBounds(100, 100, 1040, 563);
 		jramePrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jramePrincipal.getContentPane().setBackground(new Color(128, 128, 128));
