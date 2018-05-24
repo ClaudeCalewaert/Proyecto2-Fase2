@@ -1,10 +1,12 @@
 package com.calewaert.proyecto2.Proyecto2;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 /**
@@ -14,13 +16,17 @@ import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 public class OperacionesDb 
 {
     
-	// --------------------------------------------- ESTABLECER CONEXION DB -------------------------------------------------------------
+	// --------------------------------------------- ESTABLECER CONEXION DB  Y CREAR NODOS MOTIVACIONES -----------------------------------------------
 	
 	public GraphDatabaseService crearConexionDb() {
 		
 		File graphDbPath = new File("DB -neo4j-community-3.3.5\\data\\databases\\graph.db");
 		GraphDatabaseFactory graphFactory = new GraphDatabaseFactory();
 		GraphDatabaseService graphDB = graphFactory.newEmbeddedDatabase(graphDbPath);
+		
+		if (graphDB.findNodes(Denominaciones.MOTIVACION)==null) {
+			System.out.println("No se ha encontrado ningun nodo motivacion");
+		}
 		
 		return graphDB;
 	}
@@ -40,11 +46,29 @@ public class OperacionesDb
 	             graphDb.shutdown();
 	         }
 	     } );
-	     
 
 	     return JFrame.DISPOSE_ON_CLOSE;
 	    
 	 }
 	 
+	 
+	// --------------------------------------------- AGREGAR VIDEOJUEGO -------------------------------------------------------------
+	 
+	 public void agregarVideojuego (GraphDatabaseService graphDb, String titulo, int anoLanzamiento, int rating, ArrayList<String> categorias[]
+			 , ArrayList<String> plataformas, ArrayList<String> modosDeJuego, ArrayList<String> perspectivas, ArrayList<String> descripcion) {
+		 
+		 
+		Node videojuego = graphDb.createNode(Denominaciones.VIDEOJUEGO); 
+		 videojuego.setProperty("TITULO:", titulo);
+		 videojuego.setProperty("AÑO DE LANZAMIENTO:", anoLanzamiento);
+		 videojuego.setProperty("RATING:", rating);
+		 videojuego.setProperty("CATEGORIAS:", categorias);
+		 videojuego.setProperty("PLATAFORMAS:", plataformas);
+		 videojuego.setProperty("PLATAFORMAS:", plataformas);
+		 videojuego.setProperty("MODOS DE JUEGO:", modosDeJuego);
+		 videojuego.setProperty("PERSPECTIVAS:", perspectivas);
+		 videojuego.setProperty("DESCRIPCION:", descripcion);
+	 }
+	
 	 // ------- FIN -------
 }
