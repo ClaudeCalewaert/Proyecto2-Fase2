@@ -4,9 +4,12 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
+import org.neo4j.cypher.internal.compiler.v2_3.mutation.CreateNode;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
@@ -19,18 +22,42 @@ public class OperacionesDb
     
 	// --------------------------------------------- ESTABLECER CONEXION DB  Y CREAR NODOS MOTIVACIONES -----------------------------------------------
 	
-	public GraphDatabaseService crearConexionDb() {
+	public GraphDatabaseService crearConexionDb(JFrame jramePrincipal) {
 		
 		File graphDbPath = new File("DB -neo4j-community-3.3.5\\data\\databases\\graph.db");
 		GraphDatabaseFactory graphFactory = new GraphDatabaseFactory();
 		GraphDatabaseService graphDB = graphFactory.newEmbeddedDatabase(graphDbPath);
 		
+		JOptionPane.showMessageDialog(jramePrincipal, "Conexion con base de datos realizada con exito", "Conexion", JOptionPane.INFORMATION_MESSAGE);
+		
 		// Verificar y crear los 6 nodos motivaciones por primera vez
+		
 		
 		try (Transaction tx = graphDB.beginTx()) {
 		
-		if (graphDB.findNodes(Denominaciones.MOTIVACION)==null) {
-			System.out.println("No se ha encontrado ningun nodo motivacion");
+		ResourceIterator<Node> nodosMotivacion = graphDB.findNodes(Denominaciones.MOTIVACION);
+	
+		if (nodosMotivacion.hasNext()==false) {
+			
+			JOptionPane.showMessageDialog(jramePrincipal, "No se han detectado nodos Motivacion, se han creado los nodos", "Creacion de nodos", JOptionPane.INFORMATION_MESSAGE);
+			
+			Node motivacion1 = graphDB.createNode(Denominaciones.MOTIVACION);
+			motivacion1.setProperty("NOMBRE", "Accion");
+			
+			Node motivacion2 = graphDB.createNode(Denominaciones.MOTIVACION);
+			motivacion2.setProperty("NOMBRE", "Social");
+			
+			Node motivacion3 = graphDB.createNode(Denominaciones.MOTIVACION);
+			motivacion3.setProperty("NOMBRE", "Maestria");
+			
+			Node motivacion4 = graphDB.createNode(Denominaciones.MOTIVACION);
+			motivacion4.setProperty("NOMBRE", "Logros");
+			
+			Node motivacion5 = graphDB.createNode(Denominaciones.MOTIVACION);
+			motivacion5.setProperty("NOMBRE", "Creatividad");
+			
+			Node motivacion6 = graphDB.createNode(Denominaciones.MOTIVACION);
+			motivacion6.setProperty("NOMBRE", "Inmersion");
 		}
 		
 		tx.success();
