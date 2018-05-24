@@ -7,13 +7,13 @@ import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 
-import javax.swing.JButton;
 import java.awt.Button;
 import java.awt.Panel;
 import java.awt.Label;
@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.JCheckBox;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class GUIPrincipal {
@@ -63,7 +64,7 @@ public class GUIPrincipal {
 		jramePrincipal.setFont(new Font("Arial", Font.PLAIN, 20));
 		jramePrincipal.setTitle("GRE");
 		jramePrincipal.setBounds(100, 100, 1040, 563);
-		jramePrincipal.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		jramePrincipal.getContentPane().setBackground(new Color(128, 128, 128));
 		jramePrincipal.getContentPane().setLayout(new CardLayout(0, 0));
 	
@@ -75,6 +76,10 @@ public class GUIPrincipal {
 		// Asignar la conexion a la base de datos a una variable
 		
 		GraphDatabaseService graphDb = operaciones.crearConexionDb();
+		
+		// Cerrar Base de datos al cerrar ventana
+		
+		jramePrincipal.setDefaultCloseOperation(operaciones.cerrarConexion(graphDb));
 		
 		// ----------------------------------------------------------------------------- MENU PRINCIPAL -------------------------------------------------------------
 		
@@ -520,6 +525,7 @@ public class GUIPrincipal {
 		
 		JTextArea txtDescripcion = new JTextArea();
 		txtDescripcion.setBounds(732, 230, 274, 192);
+		txtDescripcion.setLineWrap(true);
 		panelDatosIngresarVideojuego.add(txtDescripcion);
 
 		Button btnCancelarAgregarVideojuego = new Button("Cancelar");
@@ -586,9 +592,257 @@ public class GUIPrincipal {
 		btnAgregarVideojuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				int existeError = 0;
+				
+				// Titulo Videojuego
+				String titulo= null;
+				
+				titulo =txtTituloVideojuego.getText();
+				
+				if (titulo.equals("")) {
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe ingresar un titulo", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				// Año Lanzamiento
+				int anoLanzamiento = 0;
+				
+				try {
+					anoLanzamiento = Integer.parseInt(txtAnoLanzamiento.getText()); 
+				}
+				
+				catch (Exception s){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe ingresar un año de lanzamiento valido", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				// Rating
+				int rating = 0;
+				
+				try {
+					 rating = Integer.parseInt(txtRating.getText()); 
+				}
+					
+				catch (Exception s){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe ingresar un rating valido", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				//Obtener Categorias
+				
+				ArrayList<String> categorias = new ArrayList<>();
+				
+				if (chAccion.isSelected()==true)
+					categorias.add("Accion");
+				
+				if (chAventura.isSelected()==true)
+					categorias.add("Aventura");
+				
+				if (chRPG.isSelected()==true)
+					categorias.add("RPG");
+				
+				if	(chSimulacion.isSelected()==true)
+					categorias.add("Simulacion");
+				
+				if	(chShooter.isSelected()==true)
+					categorias.add("Shooter");
+				
+				if	(chEstrategia.isSelected()==true)
+					categorias.add("Estrategia");
+				
+				if	(chHackAndSlash.isSelected()==true)
+					categorias.add("Hack & Slash");
+				
+				if	(chPlataforma.isSelected()==true)
+					categorias.add("Plataforma");
+				
+				if	(chFantasia.isSelected()==true)
+					categorias.add("Fantasia");
+				
+				if	(chArcade.isSelected()==true)
+					categorias.add("Arcade");
+				
+				if	(chSupervivencia.isSelected()==true)
+					categorias.add("Supervivencia");
+				
+				if	(chHorror.isSelected()==true)
+					categorias.add("Horror");
+				
+				if	(chPuzzle.isSelected()==true)
+					categorias.add("Puzzle");
+				
+				if	(chMundoAbierto.isSelected()==true)
+					categorias.add("Mundo Abierto");
+				
+				if (categorias.size()==0) {
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una categoría", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				//Fin Obtener Categorias
 				
 				
+				//Obtener Plataformas
+				
+				ArrayList<String> plataformas = new ArrayList<>();
+				
+				if (chPc.isSelected()==true)
+					plataformas.add("PC");
+				
+				if (chMac.isSelected()==true)
+					plataformas.add("Mac");
+				
+				if (chLinux.isSelected()==true)
+					plataformas.add("Linux");
+				
+				if (chSegaGenesis.isSelected()==true)
+					plataformas.add("Sega Genesis");
+				
+				if (chFamicom.isSelected()==true)
+					plataformas.add("Famicom");
+				
+				if (chDreamcast.isSelected()==true)
+					plataformas.add("Dreamcast");
+			
+				if (chPlayStation4.isSelected()==true)
+					plataformas.add("Play Station 4");
+				
+				if (chPlayStation3.isSelected()==true)
+					plataformas.add("Play Station 3");
+				
+				if (chPlayStation1.isSelected()==true)
+					plataformas.add("Play Station 1");
+				
+				if (chPsp.isSelected()==true)
+					plataformas.add("PSP");
+				
+				if (chXboxOne.isSelected()==true)
+					plataformas.add("Xbox One");
+				
+				if (chXbox360.isSelected()==true)
+					plataformas.add("Xbox 360");
+				
+				if (chXbox.isSelected()==true)
+					plataformas.add("Xbox");
+				
+				if (chAtari.isSelected()==true)
+					plataformas.add("Atari");
+				
+				if (chSwitch.isSelected()==true)
+					plataformas.add("Switch");
+				
+				if (chWiiU.isSelected()==true)
+					plataformas.add("Wii U");
+				
+				if (chWii.isSelected()==true)
+					plataformas.add("Wii");
+				
+				if (chGameCube.isSelected()==true)
+					plataformas.add("Game Cube");
+				
+				if (chN64.isSelected()==true)
+					plataformas.add("N64");
+				
+				if (chSNES.isSelected()==true)
+					plataformas.add("SNES");
+				
+				if (chDs.isSelected()==true)
+					plataformas.add("Ds");
+				
+				if (ch2Ds.isSelected()==true)
+					plataformas.add("2Ds");
+				
+				if (ch3Ds.isSelected()==true)
+					plataformas.add("3Ds");
+				
+				if (chGBA.isSelected()==true)
+					plataformas.add("GBA");
+				
+				if (chGameBoy.isSelected()==true)
+					plataformas.add("Game Boy");
+				
+				if (chNES.isSelected()==true)
+					plataformas.add("NES");
+				
+				if (plataformas.size()==0){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una plataforma", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				//Fin Obtener Plataformas
+				
+				
+				// Obtener Modos de Juegos
+				
+				ArrayList<String> modosDeJuego = new ArrayList<>();
+				
+				if (chSinglePlayer.isSelected()==true)
+					modosDeJuego.add("Single Player");
+				
+				if (chMultiplayer.isSelected()==true)
+					modosDeJuego.add("Multiplayer");
+				
+				if (modosDeJuego.size()==0){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos un modo de juego", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				// Fin Obtener Modos de Juegos
+				
+				
+				// Obtener Perspectiva
+				
+				ArrayList<String> perspectiva = new ArrayList<>();
+				
+				if (chPrimeraPersona.isSelected()==true)
+					perspectiva.add("1ra Persona");
+				
+				if (chTerceraPersona.isSelected()==true)
+					perspectiva.add("3ra Persona");
+				
+				if (chVistaArea.isSelected()==true)
+					perspectiva.add("Vista aerea");
+				
+				if (perspectiva.size()==0){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una perspectiva", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				//Fin Obtener Perspectiva
+				
+				String descripcion = txtDescripcion.getText();
+				
+				if (descripcion.equals("")){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe ingresar una descripcion", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
+				//Pruebas de ingreso de datos
+				
+				
+				System.out.println("->"+titulo+"<-");
+				System.out.println(anoLanzamiento);
+				System.out.println(rating);
+				
+				System.out.println(categorias.size());
+				System.out.println(categorias);
+				
+				System.out.println(plataformas.size());
+				System.out.println(plataformas);
+				
+				System.out.println(modosDeJuego.size());
+				System.out.println(modosDeJuego);
+				
+				System.out.println(perspectiva.size());
+				System.out.println(perspectiva);
+				
+				System.out.println(descripcion);
+				
+				System.out.println("error"+existeError);
 			}
 		});
+		
+		//FIN BOTON AGREGAR VIDEOJUEGO
+		
+		
 	}	
 }
