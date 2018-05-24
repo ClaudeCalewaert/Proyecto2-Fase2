@@ -75,7 +75,7 @@ public class GUIPrincipal {
 		
 		// Asignar la conexion a la base de datos a una variable
 		
-		GraphDatabaseService graphDb = operaciones.crearConexionDb();
+		GraphDatabaseService graphDb = operaciones.crearConexionDb(jramePrincipal);
 		
 		// Cerrar Base de datos al cerrar ventana
 		
