@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 
 /**
@@ -24,9 +25,19 @@ public class OperacionesDb
 		GraphDatabaseFactory graphFactory = new GraphDatabaseFactory();
 		GraphDatabaseService graphDB = graphFactory.newEmbeddedDatabase(graphDbPath);
 		
+		// Verificar y crear los 6 nodos motivaciones por primera vez
+		
+		try (Transaction tx = graphDB.beginTx()) {
+		
 		if (graphDB.findNodes(Denominaciones.MOTIVACION)==null) {
 			System.out.println("No se ha encontrado ningun nodo motivacion");
 		}
+		
+		tx.success();
+		
+		}
+		
+		// Fin Verificar y crear los 6 nodos motivaciones por primera vez
 		
 		return graphDB;
 	}
@@ -56,7 +67,8 @@ public class OperacionesDb
 	 
 	 public void agregarVideojuego (GraphDatabaseService graphDb, String titulo, int anoLanzamiento, int rating, ArrayList<String> categorias[]
 			 , ArrayList<String> plataformas, ArrayList<String> modosDeJuego, ArrayList<String> perspectivas, ArrayList<String> descripcion) {
-		 
+		
+		 try (Transaction tx = graphDb.beginTx()) {
 		 
 		Node videojuego = graphDb.createNode(Denominaciones.VIDEOJUEGO); 
 		 videojuego.setProperty("TITULO:", titulo);
@@ -70,5 +82,6 @@ public class OperacionesDb
 		 videojuego.setProperty("DESCRIPCION:", descripcion);
 	 }
 	
+	 }
 	 // ------- FIN -------
 }
