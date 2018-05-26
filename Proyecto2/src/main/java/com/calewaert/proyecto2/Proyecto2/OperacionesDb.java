@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
-import org.neo4j.cypher.internal.compiler.v2_3.mutation.CreateNode;
+
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
@@ -58,6 +60,9 @@ public class OperacionesDb
 			
 			Node motivacion6 = graphDB.createNode(Denominaciones.MOTIVACION);
 			motivacion6.setProperty("NOMBRE", "Inmersion");
+			
+			//Fin Verificar y crear los 6 nodos motivaciones por primera vez
+			
 		}
 		
 		tx.success();
@@ -92,23 +97,102 @@ public class OperacionesDb
 	 
 	// --------------------------------------------- AGREGAR VIDEOJUEGO -------------------------------------------------------------
 	 
-	 public void agregarVideojuego (GraphDatabaseService graphDb, String titulo, int anoLanzamiento, int rating, ArrayList<String> categorias[]
-			 , ArrayList<String> plataformas, ArrayList<String> modosDeJuego, ArrayList<String> perspectivas, ArrayList<String> descripcion) {
+	 public void agregarVideojuego (GraphDatabaseService graphDb, String titulo, int anoLanzamiento, int rating, ArrayList<String> generos
+			 , ArrayList<String> plataformas, ArrayList<String> modosDeJuego, ArrayList<String> perspectivas, String descripcion, ArrayList<String> motivaciones) {
 		
 		 try (Transaction tx = graphDb.beginTx()) {
 		 
 		Node videojuego = graphDb.createNode(Denominaciones.VIDEOJUEGO); 
-		 videojuego.setProperty("TITULO:", titulo);
-		 videojuego.setProperty("AÑO DE LANZAMIENTO:", anoLanzamiento);
-		 videojuego.setProperty("RATING:", rating);
-		 videojuego.setProperty("CATEGORIAS:", categorias);
-		 videojuego.setProperty("PLATAFORMAS:", plataformas);
-		 videojuego.setProperty("PLATAFORMAS:", plataformas);
-		 videojuego.setProperty("MODOS DE JUEGO:", modosDeJuego);
-		 videojuego.setProperty("PERSPECTIVAS:", perspectivas);
-		 videojuego.setProperty("DESCRIPCION:", descripcion);
+		 videojuego.setProperty("TITULO", titulo);
+		 videojuego.setProperty("AÑO DE LANZAMIENTO", anoLanzamiento);
+		 videojuego.setProperty("RATING", rating);
+		 
+		 
+		 //Agregar generos
+		 
+		 String[] agregarGeneros = new String[generos.size()];
+		 
+		 for (int i=0; i < generos.size(); i++) {
+			 agregarGeneros[i] = generos.get(i);
+		 }
+		 
+		 videojuego.setProperty("GENEROS", agregarGeneros);
+		 
+		 
+		 //Agregar plataformas
+		 
+		 String[] agregarPlataformas = new String[plataformas.size()];
+		 
+		 for (int i=0; i < plataformas.size(); i++) {
+			 agregarPlataformas[i] = plataformas.get(i);
+		 }
+		 
+		 videojuego.setProperty("PLATAFORMAS", agregarPlataformas);
+		 
+		 
+		 //Agregar modos de juego
+		 
+		 String[] agregarModosDeJuego = new String[modosDeJuego.size()];
+		 
+		 for (int i=0; i < modosDeJuego.size(); i++) {
+			 agregarModosDeJuego[i] = modosDeJuego.get(i);
+		 }
+		 
+		 videojuego.setProperty("MODOS DE JUEGO", agregarModosDeJuego);
+		 
+		 
+		 //Agregar perspectivas
+		 
+		 String[] agregarPerspectivas = new String[perspectivas.size()];
+		 
+		 for (int i=0; i < perspectivas.size(); i++) {
+			 agregarPerspectivas[i] = perspectivas.get(i);
+		 }
+		 
+		 videojuego.setProperty("PERSPECTIVAS", agregarPerspectivas);
+		 
+		 
+		//Agregar Descripcion
+		 videojuego.setProperty("DESCRIPCION", descripcion);
+		 
+		 
+		 //Agregar Motivaciones
+		 for (int i=0; i < motivaciones.size(); i++) {
+			 
+			 Relationship relacionMotivaciones = videojuego.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", motivaciones.get(i)),Relaciones.POSEE);
+		 }
+		 
+		 
+		 
+		 tx.success();
 	 }
 	
 	 }
 	 // ------- FIN -------
+	 
+	// --------------------------------------------- ELIMINAR VIDEOJUEGO -------------------------------------------------------------
+	 
+	 public void eliminarVideoJuego(GraphDatabaseService graphDb, String tituloVideojuego, JLayeredPane lPanelEliminarVideojuego) {
+		
+		 try (Transaction tx = graphDb.beginTx()) {
+		 
+		 Node videojuego = graphDb.findNode(Denominaciones.VIDEOJUEGO, "TITULO", tituloVideojuego);
+		 
+		 
+		 
+		 if (videojuego != null) {
+			 videojuego.delete();
+			 JOptionPane.showMessageDialog(lPanelEliminarVideojuego, "El videojuego se ha eliminado con exito", "ELIMINACION", JOptionPane.INFORMATION_MESSAGE);
+		 }
+			 
+		 
+		 if (videojuego == null)
+			 JOptionPane.showMessageDialog(lPanelEliminarVideojuego, "No se ha encontrado el videojuego, verifique los datos", "ELIMINACION", JOptionPane.ERROR_MESSAGE);
+		 
+		tx.success();
+	 }
+	 
+	 }
+	 
+	 
 }
