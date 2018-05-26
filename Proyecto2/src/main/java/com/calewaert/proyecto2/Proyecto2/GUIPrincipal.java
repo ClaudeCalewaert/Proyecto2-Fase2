@@ -167,7 +167,7 @@ public class GUIPrincipal {
 		
 		JPanel panelDatosIngresarVideojuego = new JPanel();
 		panelDatosIngresarVideojuego.setBackground(Color.DARK_GRAY);
-		panelDatosIngresarVideojuego.setBounds(0, 46, 1034, 482);
+		panelDatosIngresarVideojuego.setBounds(0, 33, 1034, 482);
 		lPanelAgregarVideojuego.add(panelDatosIngresarVideojuego);
 		panelDatosIngresarVideojuego.setLayout(null);
 		
@@ -524,7 +524,7 @@ public class GUIPrincipal {
 		panelDatosIngresarVideojuego.add(lblDescripcion);
 		
 		JTextArea txtDescripcion = new JTextArea();
-		txtDescripcion.setBounds(732, 230, 274, 192);
+		txtDescripcion.setBounds(732, 230, 274, 79);
 		txtDescripcion.setLineWrap(true);
 		panelDatosIngresarVideojuego.add(txtDescripcion);
 
@@ -541,6 +541,48 @@ public class GUIPrincipal {
 		btnAgregarVideojuego.setForeground(Color.WHITE);
 		btnAgregarVideojuego.setBounds(851, 438, 155, 34);
 		panelDatosIngresarVideojuego.add(btnAgregarVideojuego);
+		
+		Label lblMotivaciones = new Label("Motivaciones:");
+		lblMotivaciones.setForeground(Color.WHITE);
+		lblMotivaciones.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblMotivaciones.setBounds(732, 321, 127, 24);
+		panelDatosIngresarVideojuego.add(lblMotivaciones);
+		
+		JCheckBox chMAccion = new JCheckBox("Accion");
+		chMAccion.setForeground(Color.WHITE);
+		chMAccion.setBackground(Color.DARK_GRAY);
+		chMAccion.setBounds(732, 351, 113, 25);
+		panelDatosIngresarVideojuego.add(chMAccion);
+		
+		JCheckBox chMSocial = new JCheckBox("Social");
+		chMSocial.setForeground(Color.WHITE);
+		chMSocial.setBackground(Color.DARK_GRAY);
+		chMSocial.setBounds(732, 381, 113, 25);
+		panelDatosIngresarVideojuego.add(chMSocial);
+		
+		JCheckBox chMMaestria = new JCheckBox("Maestria");
+		chMMaestria.setForeground(Color.WHITE);
+		chMMaestria.setBackground(Color.DARK_GRAY);
+		chMMaestria.setBounds(732, 408, 113, 25);
+		panelDatosIngresarVideojuego.add(chMMaestria);
+		
+		JCheckBox chMLogros = new JCheckBox("Logros");
+		chMLogros.setForeground(Color.WHITE);
+		chMLogros.setBackground(Color.DARK_GRAY);
+		chMLogros.setBounds(864, 351, 113, 25);
+		panelDatosIngresarVideojuego.add(chMLogros);
+		
+		JCheckBox chMCreatividad = new JCheckBox("Creatividad");
+		chMCreatividad.setForeground(Color.WHITE);
+		chMCreatividad.setBackground(Color.DARK_GRAY);
+		chMCreatividad.setBounds(864, 381, 113, 25);
+		panelDatosIngresarVideojuego.add(chMCreatividad);
+		
+		JCheckBox chMInmersion = new JCheckBox("Inmersion");
+		chMInmersion.setForeground(Color.WHITE);
+		chMInmersion.setBackground(Color.DARK_GRAY);
+		chMInmersion.setBounds(864, 409, 113, 25);
+		panelDatosIngresarVideojuego.add(chMInmersion);
 		
 		
 		
@@ -628,53 +670,53 @@ public class GUIPrincipal {
 					existeError = 1;
 				}
 				
-				//Obtener Categorias
+				//Obtener Generos
 				
-				ArrayList<String> categorias = new ArrayList<>();
+				ArrayList<String> generos = new ArrayList<>();
 				
 				if (chAccion.isSelected()==true)
-					categorias.add("Accion");
+					generos.add("Accion");
 				
 				if (chAventura.isSelected()==true)
-					categorias.add("Aventura");
+					generos.add("Aventura");
 				
 				if (chRPG.isSelected()==true)
-					categorias.add("RPG");
+					generos.add("RPG");
 				
 				if	(chSimulacion.isSelected()==true)
-					categorias.add("Simulacion");
+					generos.add("Simulacion");
 				
 				if	(chShooter.isSelected()==true)
-					categorias.add("Shooter");
+					generos.add("Shooter");
 				
 				if	(chEstrategia.isSelected()==true)
-					categorias.add("Estrategia");
+					generos.add("Estrategia");
 				
 				if	(chHackAndSlash.isSelected()==true)
-					categorias.add("Hack & Slash");
+					generos.add("Hack & Slash");
 				
 				if	(chPlataforma.isSelected()==true)
-					categorias.add("Plataforma");
+					generos.add("Plataforma");
 				
 				if	(chFantasia.isSelected()==true)
-					categorias.add("Fantasia");
+					generos.add("Fantasia");
 				
 				if	(chArcade.isSelected()==true)
-					categorias.add("Arcade");
+					generos.add("Arcade");
 				
 				if	(chSupervivencia.isSelected()==true)
-					categorias.add("Supervivencia");
+					generos.add("Supervivencia");
 				
 				if	(chHorror.isSelected()==true)
-					categorias.add("Horror");
+					generos.add("Horror");
 				
 				if	(chPuzzle.isSelected()==true)
-					categorias.add("Puzzle");
+					generos.add("Puzzle");
 				
 				if	(chMundoAbierto.isSelected()==true)
-					categorias.add("Mundo Abierto");
+					generos.add("Mundo Abierto");
 				
-				if (categorias.size()==0) {
+				if (generos.size()==0) {
 					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una categoría", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
 					existeError = 1;
 				}
@@ -791,18 +833,18 @@ public class GUIPrincipal {
 				
 				// Obtener Perspectiva
 				
-				ArrayList<String> perspectiva = new ArrayList<>();
+				ArrayList<String> perspectivas = new ArrayList<>();
 				
 				if (chPrimeraPersona.isSelected()==true)
-					perspectiva.add("1ra Persona");
+					perspectivas.add("1ra Persona");
 				
 				if (chTerceraPersona.isSelected()==true)
-					perspectiva.add("3ra Persona");
+					perspectivas.add("3ra Persona");
 				
 				if (chVistaArea.isSelected()==true)
-					perspectiva.add("Vista aerea");
+					perspectivas.add("Vista aerea");
 				
-				if (perspectiva.size()==0){
+				if (perspectivas.size()==0){
 					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una perspectiva", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
 					existeError = 1;
 				}
@@ -816,15 +858,43 @@ public class GUIPrincipal {
 					existeError = 1;
 				}
 				
+				// Obtener Motivaciones
+				
+				ArrayList<String> motivaciones = new ArrayList<>();
+				
+				if (chMAccion.isSelected()==true)
+					motivaciones.add("Accion");
+				
+				if (chMCreatividad.isSelected()==true)
+					motivaciones.add("Creatividad");
+				
+				if (chMInmersion.isSelected()==true)
+					motivaciones.add("Inmersion");
+				
+				if (chMLogros.isSelected()==true)
+					motivaciones.add("Logros");
+				
+				if (chMMaestria.isSelected()==true)
+					motivaciones.add("Maestria");
+				
+				if (chMSocial.isSelected()==true)
+					motivaciones.add("Social");
+				
+				if (motivaciones.size()==0){
+					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una motivacion", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					existeError = 1;
+				}
+				
 				//Pruebas de ingreso de datos
 				
+				/*
 				
 				System.out.println("->"+titulo+"<-");
 				System.out.println(anoLanzamiento);
 				System.out.println(rating);
 				
 				System.out.println(categorias.size());
-				System.out.println(categorias);
+				System.out.println(generos);
 				
 				System.out.println(plataformas.size());
 				System.out.println(plataformas);
@@ -837,7 +907,19 @@ public class GUIPrincipal {
 				
 				System.out.println(descripcion);
 				
+				System.out.println(motivaciones.size());
+				System.out.println(motivaciones);
+				
 				System.out.println("error"+existeError);
+				
+				*/
+				if (existeError==0) {
+				operaciones.agregarVideojuego(graphDb, titulo, anoLanzamiento, rating, generos, plataformas, modosDeJuego, perspectivas, descripcion, motivaciones);
+				JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "El juego se ha agregado con exito", "INGRESO", JOptionPane.INFORMATION_MESSAGE);
+				
+				lPanelAgregarVideojuego.setVisible(false);
+				lPanelMenuPrincipal.setVisible(true);
+				}
 			}
 		});
 		
