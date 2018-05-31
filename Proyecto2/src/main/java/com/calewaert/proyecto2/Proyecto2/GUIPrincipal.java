@@ -13,16 +13,30 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
+
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 
 import java.awt.Button;
 import java.awt.Panel;
 import java.awt.Label;
 import javax.swing.JTextField;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.border.LineBorder;
+import javax.swing.JProgressBar;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class GUIPrincipal {
 
@@ -30,6 +44,31 @@ public class GUIPrincipal {
 	private JTextField txtTituloVideojuego;
 	private JTextField txtAnoLanzamiento;
 	private JTextField txtRating;
+	private JTextField txtNombre;
+	private JTextField txtEdadUsuario;
+	private JComboBox<String> txtVideojuegoFav1;
+	private JComboBox<String> txtVideojuegoFav2;
+	private JComboBox<String> txtVideojuegoFav3;
+	private JComboBox<String> txtVideojuegoDisf1;
+	private JComboBox<String> txtVideojuegoDisf2;
+	private JComboBox<String> txtVideojuegoDisf3;
+	private JTextField txtNombreUsuario;
+	private JTextField txtContraseña;
+	private JTextField txtUserRecomendacion;
+	private JPasswordField txtpasswordField;
+	private JTable tablaRecomendaciones;
+	private JComboBox<String> txtTituloVideojuegoEliminar;
+	
+	// Variables preguntas usuario
+	private int contadorPreguntas = 0;
+	private int progresoBarraPreguntas = 0;
+	private int respPregunta1Accion = 0;
+	private int respPregunta2Social = 0;
+	private int respPregunta3Maestria = 0;
+	private int respPregunta4Logros = 0;
+	private int respPregunta5Creatividad = 0;
+	private int respPregunta6Inmersion = 0;
+	
 
 	
 	/**
@@ -167,7 +206,7 @@ public class GUIPrincipal {
 		
 		JPanel panelDatosIngresarVideojuego = new JPanel();
 		panelDatosIngresarVideojuego.setBackground(Color.DARK_GRAY);
-		panelDatosIngresarVideojuego.setBounds(0, 33, 1034, 482);
+		panelDatosIngresarVideojuego.setBounds(0, 46, 1034, 482);
 		lPanelAgregarVideojuego.add(panelDatosIngresarVideojuego);
 		panelDatosIngresarVideojuego.setLayout(null);
 		
@@ -584,16 +623,484 @@ public class GUIPrincipal {
 		chMInmersion.setBounds(864, 409, 113, 25);
 		panelDatosIngresarVideojuego.add(chMInmersion);
 		
+		JCheckBox chVistaLateral = new JCheckBox("Vista Lateral");
+		chVistaLateral.setForeground(Color.WHITE);
+		chVistaLateral.setBackground(Color.DARK_GRAY);
+		chVistaLateral.setBounds(504, 437, 113, 25);
+		panelDatosIngresarVideojuego.add(chVistaLateral);
 		
+		JCheckBox chDeporte = new JCheckBox("Deporte");
+		chDeporte.setForeground(Color.WHITE);
+		chDeporte.setBackground(Color.DARK_GRAY);
+		chDeporte.setBounds(864, 160, 113, 25);
+		panelDatosIngresarVideojuego.add(chDeporte);
+		
+		
+		
+		
+		// ----------------------------------------------------------------------------- INGRESAR USUARIO -------------------------------------------------------------
+		
+		
+		
+		JLayeredPane lPanelAgregarUsuario = new JLayeredPane();
+		jramePrincipal.getContentPane().add(lPanelAgregarUsuario, "name_304202694180708");
+		
+		JPanel panelTituloAgregarUsuario = new JPanel();
+		panelTituloAgregarUsuario.setBackground(new Color(255, 140, 0));
+		panelTituloAgregarUsuario.setBounds(0, 0, 1034, 46);
+		lPanelAgregarUsuario.add(panelTituloAgregarUsuario);
+		panelTituloAgregarUsuario.setLayout(null);
+		
+		JLabel lblAgregarUsuario = new JLabel("Agregar Usuario");
+		lblAgregarUsuario.setForeground(Color.WHITE);
+		lblAgregarUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAgregarUsuario.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblAgregarUsuario.setBounds(0, 0, 1034, 46);
+		panelTituloAgregarUsuario.add(lblAgregarUsuario);
+	
+		JPanel panelDatosAgregarUsuario = new JPanel();
+		panelDatosAgregarUsuario.setBackground(Color.DARK_GRAY);
+		panelDatosAgregarUsuario.setBounds(0, 46, 1034, 482);
+		lPanelAgregarUsuario.add(panelDatosAgregarUsuario);
+		panelDatosAgregarUsuario.setLayout(null);
+		
+		Label lblNombre = new Label("Nombre :");
+		lblNombre.setForeground(Color.WHITE);
+		lblNombre.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNombre.setBounds(10, 22, 77, 24);
+		panelDatosAgregarUsuario.add(lblNombre);
+		
+		txtNombre = new JTextField();
+		txtNombre.setHorizontalAlignment(SwingConstants.CENTER);
+		txtNombre.setForeground(Color.WHITE);
+		txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtNombre.setColumns(10);
+		txtNombre.setBackground(Color.DARK_GRAY);
+		txtNombre.setBounds(93, 24, 274, 22);
+		panelDatosAgregarUsuario.add(txtNombre);
+		
+		Label lblEdad = new Label("Edad:");
+		lblEdad.setForeground(Color.WHITE);
+		lblEdad.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblEdad.setBounds(410, 22, 45, 24);
+		panelDatosAgregarUsuario.add(lblEdad);
+		
+		txtEdadUsuario = new JTextField();
+		txtEdadUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		txtEdadUsuario.setForeground(Color.WHITE);
+		txtEdadUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtEdadUsuario.setColumns(10);
+		txtEdadUsuario.setBackground(Color.DARK_GRAY);
+		txtEdadUsuario.setBounds(468, 24, 27, 22);
+		panelDatosAgregarUsuario.add(txtEdadUsuario);
+		
+		Label lblGeneroUsuario = new Label("Género:");
+		lblGeneroUsuario.setForeground(Color.WHITE);
+		lblGeneroUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblGeneroUsuario.setBounds(557, 22, 70, 24);
+		panelDatosAgregarUsuario.add(lblGeneroUsuario);
+		
+		JRadioButton rdbMasculino = new JRadioButton("Masculino");
+		rdbMasculino.setBackground(Color.DARK_GRAY);
+		rdbMasculino.setForeground(Color.WHITE);
+		rdbMasculino.setBounds(633, 22, 91, 25);
+		panelDatosAgregarUsuario.add(rdbMasculino);
+		
+		JRadioButton rdbFemenino = new JRadioButton("Femenino");
+		rdbFemenino.setForeground(Color.WHITE);
+		rdbFemenino.setBackground(Color.DARK_GRAY);
+		rdbFemenino.setBounds(728, 21, 91, 25);
+		panelDatosAgregarUsuario.add(rdbFemenino);
+		
+		ButtonGroup grupoOpcionGenero = new ButtonGroup();
+		grupoOpcionGenero.add(rdbMasculino);
+		grupoOpcionGenero.add(rdbFemenino);
+		
+		
+		Label lblIngreseVideojuegosFav = new Label("Cuales son sus tres videojuegos favoritos:");
+		lblIngreseVideojuegosFav.setForeground(Color.WHITE);
+		lblIngreseVideojuegosFav.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblIngreseVideojuegosFav.setBounds(10, 96, 325, 24);
+		panelDatosAgregarUsuario.add(lblIngreseVideojuegosFav);
+		
+		txtVideojuegoFav1 = new JComboBox<>();
+		txtVideojuegoFav1.setForeground(Color.WHITE);
+		txtVideojuegoFav1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtVideojuegoFav1.setBackground(Color.DARK_GRAY);
+		txtVideojuegoFav1.setBounds(10, 133, 274, 22);
+		panelDatosAgregarUsuario.add(txtVideojuegoFav1);
+		
+		txtVideojuegoFav2 = new JComboBox<>();
+		txtVideojuegoFav2.setForeground(Color.WHITE);
+		txtVideojuegoFav2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtVideojuegoFav2.setBackground(Color.DARK_GRAY);
+		txtVideojuegoFav2.setBounds(10, 168, 274, 22);
+		panelDatosAgregarUsuario.add(txtVideojuegoFav2);
+		
+		txtVideojuegoFav3 = new JComboBox<>();
+		txtVideojuegoFav3.setForeground(Color.WHITE);
+		txtVideojuegoFav3.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtVideojuegoFav3.setBackground(Color.DARK_GRAY);
+		txtVideojuegoFav3.setBounds(10, 203, 274, 22);
+		panelDatosAgregarUsuario.add(txtVideojuegoFav3);
+		
+		Label lblUltimosTresVideojuegos = new Label("Ultimos tres videojuegos que ha disfrutado:");
+		lblUltimosTresVideojuegos.setForeground(Color.WHITE);
+		lblUltimosTresVideojuegos.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblUltimosTresVideojuegos.setBounds(10, 257, 325, 24);
+		panelDatosAgregarUsuario.add(lblUltimosTresVideojuegos);
+		
+		txtVideojuegoDisf1 = new JComboBox<>();
+		txtVideojuegoDisf1.setForeground(Color.WHITE);
+		txtVideojuegoDisf1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtVideojuegoDisf1.setBackground(Color.DARK_GRAY);
+		txtVideojuegoDisf1.setBounds(10, 287, 274, 22);
+		panelDatosAgregarUsuario.add(txtVideojuegoDisf1);
+		
+		txtVideojuegoDisf2 = new JComboBox<>();
+		txtVideojuegoDisf2.setForeground(Color.WHITE);
+		txtVideojuegoDisf2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtVideojuegoDisf2.setBackground(Color.DARK_GRAY);
+		txtVideojuegoDisf2.setBounds(10, 322, 274, 22);
+		panelDatosAgregarUsuario.add(txtVideojuegoDisf2);
+		
+		txtVideojuegoDisf3 = new JComboBox<>();
+		txtVideojuegoDisf3.setForeground(Color.WHITE);
+		txtVideojuegoDisf3.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtVideojuegoDisf3.setBackground(Color.DARK_GRAY);
+		txtVideojuegoDisf3.setBounds(10, 357, 274, 22);
+		panelDatosAgregarUsuario.add(txtVideojuegoDisf3);
+		
+		// Agregar autocompletar a los textFields
+		
+		EventList<String> listaTitulos = operaciones.ListaVideojuegos(graphDb);
+		
+		AutoCompleteSupport.install(txtVideojuegoFav1, listaTitulos);
+		AutoCompleteSupport.install(txtVideojuegoFav2, listaTitulos);
+		AutoCompleteSupport.install(txtVideojuegoFav3, listaTitulos);
+		AutoCompleteSupport.install(txtVideojuegoDisf1, listaTitulos);
+		AutoCompleteSupport.install(txtVideojuegoDisf2, listaTitulos);
+		AutoCompleteSupport.install(txtVideojuegoDisf3, listaTitulos);
+		
+		
+		JPanel panelPreguntas = new JPanel();
+		panelPreguntas.setOpaque(false);
+		panelPreguntas.setBorder(new LineBorder(new Color(255, 255, 255)));
+		panelPreguntas.setBackground(Color.DARK_GRAY);
+		panelPreguntas.setBounds(351, 101, 671, 195);
+		panelDatosAgregarUsuario.add(panelPreguntas);
+		panelPreguntas.setLayout(null);
+		
+		Label lblPreguntas = new Label("Que opina sobre una trama/historia elaborada en un videojuego:");
+		lblPreguntas.setForeground(Color.WHITE);
+		lblPreguntas.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblPreguntas.setBounds(8, 10, 651, 40);
+		panelPreguntas.add(lblPreguntas);
+		
+		JRadioButton rdbNadaImportante = new JRadioButton("Nada Importante");
+		rdbNadaImportante.setForeground(Color.WHITE);
+		rdbNadaImportante.setBackground(Color.DARK_GRAY);
+		rdbNadaImportante.setBounds(8, 56, 125, 25);
+		panelPreguntas.add(rdbNadaImportante);
+		
+		JRadioButton rdbAlgoImportante = new JRadioButton("Algo Importante");
+		rdbAlgoImportante.setForeground(Color.WHITE);
+		rdbAlgoImportante.setBackground(Color.DARK_GRAY);
+		rdbAlgoImportante.setBounds(130, 56, 125, 25);
+		panelPreguntas.add(rdbAlgoImportante);
+		
+		JRadioButton rdbImportante = new JRadioButton("Importante");
+		rdbImportante.setForeground(Color.WHITE);
+		rdbImportante.setBackground(Color.DARK_GRAY);
+		rdbImportante.setBounds(250, 56, 91, 25);
+		panelPreguntas.add(rdbImportante);
+		
+		JRadioButton rdbBastanteImportante = new JRadioButton("Bastante Importante");
+		rdbBastanteImportante.setForeground(Color.WHITE);
+		rdbBastanteImportante.setBackground(Color.DARK_GRAY);
+		rdbBastanteImportante.setBounds(340, 56, 145, 25);
+		panelPreguntas.add(rdbBastanteImportante);
+		
+		JRadioButton rdbExtremadamenteImportante = new JRadioButton("Extrenadanente Importante");
+		rdbExtremadamenteImportante.setForeground(Color.WHITE);
+		rdbExtremadamenteImportante.setBackground(Color.DARK_GRAY);
+		rdbExtremadamenteImportante.setBounds(480, 56, 189, 25);
+		panelPreguntas.add(rdbExtremadamenteImportante);
+		
+		ButtonGroup grupoOpcionImportacia = new ButtonGroup();
+		grupoOpcionImportacia.add(rdbNadaImportante);
+		grupoOpcionImportacia.add(rdbAlgoImportante);
+		grupoOpcionImportacia.add(rdbImportante);
+		grupoOpcionImportacia.add(rdbBastanteImportante);
+		grupoOpcionImportacia.add(rdbExtremadamenteImportante);
+		
+		JProgressBar barraDeProgresoPreguntas = new JProgressBar();
+		barraDeProgresoPreguntas.setBorder(new LineBorder(Color.WHITE));
+		barraDeProgresoPreguntas.setOpaque(true);
+		barraDeProgresoPreguntas.setForeground(new Color(255, 140, 0));
+		barraDeProgresoPreguntas.setValue(20);
+		barraDeProgresoPreguntas.setStringPainted(true);
+		barraDeProgresoPreguntas.setBackground(Color.DARK_GRAY);
+		barraDeProgresoPreguntas.setBounds(8, 155, 651, 19);
+		panelPreguntas.add(barraDeProgresoPreguntas);
+		
+		Button btnAnteriorPregunta = new Button("Anterior");
+		btnAnteriorPregunta.setBackground(Color.DARK_GRAY);
+		btnAnteriorPregunta.setForeground(Color.WHITE);
+		btnAnteriorPregunta.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnAnteriorPregunta.setBounds(212, 108, 91, 25);
+		panelPreguntas.add(btnAnteriorPregunta);
+		
+		Button btnSiguientePregunta = new Button("Siguiente");
+		btnSiguientePregunta.setBackground(Color.DARK_GRAY);
+		btnSiguientePregunta.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		btnSiguientePregunta.setForeground(Color.WHITE);
+		btnSiguientePregunta.setBounds(354, 108, 91, 25);
+		panelPreguntas.add(btnSiguientePregunta);
+		
+		Button btnAgregarUsuario = new Button("Agregar Usuario");
+		btnAgregarUsuario.setForeground(Color.WHITE);
+		btnAgregarUsuario.setFont(new Font("Dialog", Font.BOLD, 13));
+		btnAgregarUsuario.setBackground(new Color(255, 140, 0));
+		btnAgregarUsuario.setBounds(867, 427, 155, 34);
+		panelDatosAgregarUsuario.add(btnAgregarUsuario);
+		
+		Button btnCancelarAgregarUsuario = new Button("Cancelar");
+		btnCancelarAgregarUsuario.setForeground(Color.WHITE);
+		btnCancelarAgregarUsuario.setFont(new Font("Dialog", Font.BOLD, 13));
+		btnCancelarAgregarUsuario.setBackground(new Color(255, 99, 71));
+		btnCancelarAgregarUsuario.setBounds(728, 427, 99, 34);
+		panelDatosAgregarUsuario.add(btnCancelarAgregarUsuario);
+		
+		Label lblNombreUsuario = new Label("Nombre de usuario:");
+		lblNombreUsuario.setForeground(Color.WHITE);
+		lblNombreUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNombreUsuario.setBounds(351, 322, 145, 24);
+		panelDatosAgregarUsuario.add(lblNombreUsuario);
+		
+		txtNombreUsuario = new JTextField();
+		txtNombreUsuario.setHorizontalAlignment(SwingConstants.CENTER);
+		txtNombreUsuario.setForeground(Color.WHITE);
+		txtNombreUsuario.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtNombreUsuario.setColumns(10);
+		txtNombreUsuario.setBackground(Color.DARK_GRAY);
+		txtNombreUsuario.setBounds(351, 357, 274, 22);
+		panelDatosAgregarUsuario.add(txtNombreUsuario);
+		
+		Label lblContraseña = new Label("Contraseña:");
+		lblContraseña.setForeground(Color.WHITE);
+		lblContraseña.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblContraseña.setBounds(728, 320, 145, 24);
+		panelDatosAgregarUsuario.add(lblContraseña);
+		
+		txtContraseña = new JTextField();
+		txtContraseña.setHorizontalAlignment(SwingConstants.CENTER);
+		txtContraseña.setForeground(Color.WHITE);
+		txtContraseña.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtContraseña.setColumns(10);
+		txtContraseña.setBackground(Color.DARK_GRAY);
+		txtContraseña.setBounds(728, 357, 274, 22);
+		panelDatosAgregarUsuario.add(txtContraseña);
+		
+		// ----------------------------------------------------------------------------- OBTENER RECOMENDACION -------------------------------------------------------------
+		
+		JLayeredPane lPanelObtenerRecomendacion = new JLayeredPane();
+		jramePrincipal.getContentPane().add(lPanelObtenerRecomendacion, "name_141227190678198");
+		
+		JPanel panelTituloRecomendaciones = new JPanel();
+		panelTituloRecomendaciones.setLayout(null);
+		panelTituloRecomendaciones.setBackground(new Color(255, 140, 0));
+		panelTituloRecomendaciones.setBounds(0, 0, 1034, 46);
+		lPanelObtenerRecomendacion.add(panelTituloRecomendaciones);
+		
+		JLabel lblTituloRecomendacion = new JLabel("Obtener Recomendacion");
+		lblTituloRecomendacion.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTituloRecomendacion.setForeground(Color.WHITE);
+		lblTituloRecomendacion.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblTituloRecomendacion.setBounds(0, 0, 1034, 46);
+		panelTituloRecomendaciones.add(lblTituloRecomendacion);
+		
+		JPanel panelDatosRecomendaciones = new JPanel();
+		panelDatosRecomendaciones.setLayout(null);
+		panelDatosRecomendaciones.setBackground(Color.DARK_GRAY);
+		panelDatosRecomendaciones.setBounds(0, 46, 1034, 482);
+		lPanelObtenerRecomendacion.add(panelDatosRecomendaciones);
+		
+		Label lblUserRecomendacion = new Label("Ingrese nombre de usuario (User) :");
+		lblUserRecomendacion.setForeground(Color.WHITE);
+		lblUserRecomendacion.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblUserRecomendacion.setBounds(10, 22, 260, 24);
+		panelDatosRecomendaciones.add(lblUserRecomendacion);
+		
+		txtUserRecomendacion = new JTextField();
+		txtUserRecomendacion.setHorizontalAlignment(SwingConstants.CENTER);
+		txtUserRecomendacion.setForeground(Color.WHITE);
+		txtUserRecomendacion.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtUserRecomendacion.setColumns(10);
+		txtUserRecomendacion.setBackground(Color.DARK_GRAY);
+		txtUserRecomendacion.setBounds(276, 24, 209, 22);
+		panelDatosRecomendaciones.add(txtUserRecomendacion);
+		
+		Button btnObtenerRecomendacion = new Button("Obtener recomendacion");
+		btnObtenerRecomendacion.setForeground(Color.WHITE);
+		btnObtenerRecomendacion.setFont(new Font("Dialog", Font.BOLD, 13));
+		btnObtenerRecomendacion.setBackground(new Color(255, 140, 0));
+		btnObtenerRecomendacion.setBounds(806, 427, 186, 34);
+		panelDatosRecomendaciones.add(btnObtenerRecomendacion);
+		
+		Button btnCancelarRecomendacion = new Button("Cancelar");
+		btnCancelarRecomendacion.setForeground(Color.WHITE);
+		btnCancelarRecomendacion.setFont(new Font("Dialog", Font.BOLD, 13));
+		btnCancelarRecomendacion.setBackground(new Color(255, 99, 71));
+		btnCancelarRecomendacion.setBounds(670, 427, 99, 34);
+		panelDatosRecomendaciones.add(btnCancelarRecomendacion);
+		
+		Label lblPassword = new Label("Contraseña:");
+		lblPassword.setForeground(Color.WHITE);
+		lblPassword.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblPassword.setBounds(546, 22, 99, 24);
+		panelDatosRecomendaciones.add(lblPassword);
+		
+		txtpasswordField = new JPasswordField();
+		txtpasswordField.setForeground(Color.WHITE);
+		txtpasswordField.setBackground(Color.DARK_GRAY);
+		txtpasswordField.setBounds(651, 24, 132, 22);
+		panelDatosRecomendaciones.add(txtpasswordField);
+		
+		tablaRecomendaciones = new JTable();
+		tablaRecomendaciones.setBorder(new LineBorder(Color.WHITE));
+		tablaRecomendaciones.setBackground(Color.DARK_GRAY);
+		tablaRecomendaciones.setBounds(377, 75, 615, 315);
+		panelDatosRecomendaciones.add(tablaRecomendaciones);
+		
+		Label lblRangoDeLanzamientoRecomendacion = new Label("Rango de lanzamiento:");
+		lblRangoDeLanzamientoRecomendacion.setForeground(Color.WHITE);
+		lblRangoDeLanzamientoRecomendacion.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblRangoDeLanzamientoRecomendacion.setBounds(10, 147, 173, 24);
+		panelDatosRecomendaciones.add(lblRangoDeLanzamientoRecomendacion);
+		
+		JRadioButton rdbAntiguosRecomendacion = new JRadioButton("Antiguos");
+		rdbAntiguosRecomendacion.setForeground(Color.WHITE);
+		rdbAntiguosRecomendacion.setBackground(Color.DARK_GRAY);
+		rdbAntiguosRecomendacion.setBounds(10, 177, 99, 25);
+		panelDatosRecomendaciones.add(rdbAntiguosRecomendacion);
+		
+		JRadioButton rdbSemiRecientesRecomendacion = new JRadioButton("Semi-recientes");
+		rdbSemiRecientesRecomendacion.setForeground(Color.WHITE);
+		rdbSemiRecientesRecomendacion.setBackground(Color.DARK_GRAY);
+		rdbSemiRecientesRecomendacion.setBounds(113, 177, 125, 25);
+		panelDatosRecomendaciones.add(rdbSemiRecientesRecomendacion);
+		
+		JRadioButton rdbRecientesRecomendacion = new JRadioButton("Recientes");
+		rdbRecientesRecomendacion.setForeground(Color.WHITE);
+		rdbRecientesRecomendacion.setBackground(Color.DARK_GRAY);
+		rdbRecientesRecomendacion.setBounds(242, 177, 99, 25);
+		panelDatosRecomendaciones.add(rdbRecientesRecomendacion);
+		
+		// Grupo rango lanzamiento
+		ButtonGroup grupoRangoDeLanzamiento = new ButtonGroup();
+		grupoRangoDeLanzamiento.add(rdbAntiguosRecomendacion);
+		grupoRangoDeLanzamiento.add(rdbSemiRecientesRecomendacion);
+		grupoRangoDeLanzamiento.add(rdbRecientesRecomendacion);
+		
+		
+		Label lblPopularidadRecomendacion = new Label("Popularidad:");
+		lblPopularidadRecomendacion.setForeground(Color.WHITE);
+		lblPopularidadRecomendacion.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblPopularidadRecomendacion.setBounds(10, 258, 173, 24);
+		panelDatosRecomendaciones.add(lblPopularidadRecomendacion);
+		
+		JRadioButton rdbNoTanPopularesRecomendacion = new JRadioButton("No tan populares");
+		rdbNoTanPopularesRecomendacion.setForeground(Color.WHITE);
+		rdbNoTanPopularesRecomendacion.setBackground(Color.DARK_GRAY);
+		rdbNoTanPopularesRecomendacion.setBounds(10, 288, 132, 25);
+		panelDatosRecomendaciones.add(rdbNoTanPopularesRecomendacion);
+		
+		JRadioButton rdbPopularesRecomendacion = new JRadioButton("Populares");
+		rdbPopularesRecomendacion.setForeground(Color.WHITE);
+		rdbPopularesRecomendacion.setBackground(Color.DARK_GRAY);
+		rdbPopularesRecomendacion.setBounds(146, 288, 125, 25);
+		panelDatosRecomendaciones.add(rdbPopularesRecomendacion);
+		
+		// Grupo popularidad
+		
+		ButtonGroup grupoPopularidadRecomendaciones = new ButtonGroup();
+		grupoPopularidadRecomendaciones.add(rdbNoTanPopularesRecomendacion);
+		grupoPopularidadRecomendaciones.add(rdbPopularesRecomendacion);
+		
+		JCheckBox chAjustarPreferencias = new JCheckBox("Ajustar Preferencias");
+		chAjustarPreferencias.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		chAjustarPreferencias.setHorizontalAlignment(SwingConstants.CENTER);
+		chAjustarPreferencias.setForeground(Color.WHITE);
+		chAjustarPreferencias.setBackground(Color.DARK_GRAY);
+		chAjustarPreferencias.setBounds(25, 88, 325, 25);
+		panelDatosRecomendaciones.add(chAjustarPreferencias);
+		
+		
+		
+		// ----------------------------------------------------------------------------- ELIMINAR VIDEOJUEGO -------------------------------------------------------------
+		
+		
+		
+		JLayeredPane lPanelEliminarVideojuego = new JLayeredPane();
+		jramePrincipal.getContentPane().add(lPanelEliminarVideojuego, "name_172903503945285");
+		
+		JPanel panelTituloEliminarVideojuego = new JPanel();
+		panelTituloEliminarVideojuego.setLayout(null);
+		panelTituloEliminarVideojuego.setBackground(new Color(255, 140, 0));
+		panelTituloEliminarVideojuego.setBounds(0, 0, 1034, 46);
+		lPanelEliminarVideojuego.add(panelTituloEliminarVideojuego);
+		
+		JLabel lblEliminarVideojuego = new JLabel("Eliminar Videojuego");
+		lblEliminarVideojuego.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEliminarVideojuego.setForeground(Color.WHITE);
+		lblEliminarVideojuego.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblEliminarVideojuego.setBounds(0, 0, 1034, 46);
+		panelTituloEliminarVideojuego.add(lblEliminarVideojuego);
+		
+		JPanel panelDatosEliminarVideojuego = new JPanel();
+		panelDatosEliminarVideojuego.setLayout(null);
+		panelDatosEliminarVideojuego.setBackground(Color.DARK_GRAY);
+		panelDatosEliminarVideojuego.setBounds(0, 46, 1034, 482);
+		lPanelEliminarVideojuego.add(panelDatosEliminarVideojuego);
+		
+		Label label_1 = new Label("Titulo del videojuego a eliminar:");
+		label_1.setForeground(Color.WHITE);
+		label_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		label_1.setBounds(117, 99, 252, 24);
+		panelDatosEliminarVideojuego.add(label_1);
+		
+		txtTituloVideojuegoEliminar = new JComboBox<>();
+		txtTituloVideojuegoEliminar.setForeground(Color.WHITE);
+		txtTituloVideojuegoEliminar.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		txtTituloVideojuegoEliminar.setBackground(Color.DARK_GRAY);
+		txtTituloVideojuegoEliminar.setBounds(388, 99, 274, 22);
+		panelDatosEliminarVideojuego.add(txtTituloVideojuegoEliminar);
+		
+		// Agregar autocompletar a titulo eliminar videojuego
+		AutoCompleteSupport.install(txtTituloVideojuegoEliminar, listaTitulos);
+		
+		Button btnEliminarVideojuego = new Button("Eliminar videojuego");
+		btnEliminarVideojuego.setForeground(Color.WHITE);
+		btnEliminarVideojuego.setFont(new Font("Dialog", Font.BOLD, 13));
+		btnEliminarVideojuego.setBackground(new Color(255, 140, 0));
+		btnEliminarVideojuego.setBounds(867, 427, 155, 34);
+		panelDatosEliminarVideojuego.add(btnEliminarVideojuego);
+		
+		Button btnCancelarEliminarVideojuego = new Button("Cancelar");
+		btnCancelarEliminarVideojuego.setForeground(Color.WHITE);
+		btnCancelarEliminarVideojuego.setFont(new Font("Dialog", Font.BOLD, 13));
+		btnCancelarEliminarVideojuego.setBackground(new Color(255, 99, 71));
+		btnCancelarEliminarVideojuego.setBounds(728, 427, 99, 34);
+		panelDatosEliminarVideojuego.add(btnCancelarEliminarVideojuego);
 		
 		// ----------------------------------------------------------------------------- ACCIONES BOTONES -------------------------------------------------------------
 		
 		
+		// ------------------------------------------- AGREGAR VIDEOJUEGOS --------------------------------
 		
-		// --------------------------------------------- MENU PRINCIPAL --------------------------------
 		
-		
-		// BOTON OPCION AGREGAR VIDEOJUEGOS
+		// BOTON OPCION AGREGAR VIDEOJUEGOS ----- MENU PRINCIPAL 
 		
 		btnOpcionAgregarVideojuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -609,9 +1116,6 @@ public class GUIPrincipal {
 		});
 		
 		
-		// ------------------------------------------- AGREGAR VIDEOJUEGOS --------------------------------
-		
-		
 		// BOTON CANCELAR AGREGAR VIDEOJUEGOS
 		
 		btnCancelarAgregarVideojuego.addActionListener(new ActionListener() {
@@ -621,10 +1125,74 @@ public class GUIPrincipal {
 				
 				lPanelAgregarVideojuego.setVisible(false);
 				
+				//limpiar
+				
+				txtTituloVideojuego.setText("");
+				txtAnoLanzamiento.setText("");
+				txtRating.setText("");
+				
+				ch2Ds.setSelected(false);
+				ch3Ds.setSelected(false);
+				chAccion.setSelected(false);
+				chArcade.setSelected(false);
+				chAtari.setSelected(false);
+				chAventura.setSelected(false);
+				chDreamcast.setSelected(false);
+				chDs.setSelected(false);
+				chEstrategia.setSelected(false);
+				chFamicom.setSelected(false);
+				chFantasia.setSelected(false);
+				chGameBoy.setSelected(false);
+				chGameCube.setSelected(false);
+				chGBA.setSelected(false);
+				chHackAndSlash.setSelected(false);
+				chHorror.setSelected(false);
+				chLinux.setSelected(false);
+				chMac.setSelected(false);
+				chMAccion.setSelected(false);
+				chMCreatividad.setSelected(false);
+				chMInmersion.setSelected(false);
+				chMLogros.setSelected(false);
+				chMMaestria.setSelected(false);
+				chMSocial.setSelected(false);
+				chMultiplayer.setSelected(false);
+				chMundoAbierto.setSelected(false);
+				chN64.setSelected(false);
+				chNES.setSelected(false);
+				chPc.setSelected(false);
+				chPlataforma.setSelected(false);
+				chPlayStation1.setSelected(false);
+				chPlayStation2.setSelected(false);
+				chPlayStation3.setSelected(false);
+				chPlayStation4.setSelected(false);
+				chPrimeraPersona.setSelected(false);
+				chPsp.setSelected(false);
+				chPuzzle.setSelected(false);
+				chRPG.setSelected(false);
+				chSegaGenesis.setSelected(false);
+				chShooter.setSelected(false);
+				chSimulacion.setSelected(false);
+				chSinglePlayer.setSelected(false);
+				chSNES.setSelected(false);
+				chSupervivencia.setSelected(false);
+				chSwitch.setSelected(false);
+				chTerceraPersona.setSelected(false);
+				chVistaArea.setSelected(false);
+				chWii.setSelected(false);
+				chWiiU.setSelected(false);
+				chXbox.setSelected(false);
+				chXbox360.setSelected(false);
+				chXboxOne.setSelected(false);
+				chVistaLateral.setSelected(false);
+				chDeporte.setSelected(false);
+				
+				txtDescripcion.setText("");
+				
 				// Mostrar elementos Menu Principal
 				
 
 				lPanelMenuPrincipal.setVisible(true);
+				
 				
 			}
 		});
@@ -716,6 +1284,9 @@ public class GUIPrincipal {
 				if	(chMundoAbierto.isSelected()==true)
 					generos.add("Mundo Abierto");
 				
+				if	(chDeporte.isSelected()==true)
+					generos.add("Deporte");
+				
 				if (generos.size()==0) {
 					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una categoría", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
 					existeError = 1;
@@ -750,6 +1321,9 @@ public class GUIPrincipal {
 				
 				if (chPlayStation3.isSelected()==true)
 					plataformas.add("Play Station 3");
+				
+				if (chPlayStation2.isSelected()==true)
+					plataformas.add("Play Station 2");
 				
 				if (chPlayStation1.isSelected()==true)
 					plataformas.add("Play Station 1");
@@ -844,6 +1418,9 @@ public class GUIPrincipal {
 				if (chVistaArea.isSelected()==true)
 					perspectivas.add("Vista aerea");
 				
+				if (chVistaLateral.isSelected()==true)
+					perspectivas.add("Vista lateral");
+				
 				if (perspectivas.size()==0){
 					JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "Debe seleccionar al menos una perspectiva", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
 					existeError = 1;
@@ -917,8 +1494,73 @@ public class GUIPrincipal {
 				operaciones.agregarVideojuego(graphDb, titulo, anoLanzamiento, rating, generos, plataformas, modosDeJuego, perspectivas, descripcion, motivaciones);
 				JOptionPane.showMessageDialog(lPanelAgregarVideojuego, "El juego se ha agregado con exito", "INGRESO", JOptionPane.INFORMATION_MESSAGE);
 				
+				//limpiar
+				
+				txtTituloVideojuego.setText("");
+				txtAnoLanzamiento.setText("");
+				txtRating.setText("");
+				
+				ch2Ds.setSelected(false);
+				ch3Ds.setSelected(false);
+				chAccion.setSelected(false);
+				chArcade.setSelected(false);
+				chAtari.setSelected(false);
+				chAventura.setSelected(false);
+				chDreamcast.setSelected(false);
+				chDs.setSelected(false);
+				chEstrategia.setSelected(false);
+				chFamicom.setSelected(false);
+				chFantasia.setSelected(false);
+				chGameBoy.setSelected(false);
+				chGameCube.setSelected(false);
+				chGBA.setSelected(false);
+				chHackAndSlash.setSelected(false);
+				chHorror.setSelected(false);
+				chLinux.setSelected(false);
+				chMac.setSelected(false);
+				chMAccion.setSelected(false);
+				chMCreatividad.setSelected(false);
+				chMInmersion.setSelected(false);
+				chMLogros.setSelected(false);
+				chMMaestria.setSelected(false);
+				chMSocial.setSelected(false);
+				chMultiplayer.setSelected(false);
+				chMundoAbierto.setSelected(false);
+				chN64.setSelected(false);
+				chNES.setSelected(false);
+				chPc.setSelected(false);
+				chPlataforma.setSelected(false);
+				chPlayStation1.setSelected(false);
+				chPlayStation2.setSelected(false);
+				chPlayStation3.setSelected(false);
+				chPlayStation4.setSelected(false);
+				chPrimeraPersona.setSelected(false);
+				chPsp.setSelected(false);
+				chPuzzle.setSelected(false);
+				chRPG.setSelected(false);
+				chSegaGenesis.setSelected(false);
+				chShooter.setSelected(false);
+				chSimulacion.setSelected(false);
+				chSinglePlayer.setSelected(false);
+				chSNES.setSelected(false);
+				chSupervivencia.setSelected(false);
+				chSwitch.setSelected(false);
+				chTerceraPersona.setSelected(false);
+				chVistaArea.setSelected(false);
+				chWii.setSelected(false);
+				chWiiU.setSelected(false);
+				chXbox.setSelected(false);
+				chXbox360.setSelected(false);
+				chXboxOne.setSelected(false);
+				chVistaLateral.setSelected(false);
+				chDeporte.setSelected(false);
+				
+				txtDescripcion.setText("");
+				
+				
 				lPanelAgregarVideojuego.setVisible(false);
 				lPanelMenuPrincipal.setVisible(true);
+				
 				}
 			}
 		});
@@ -926,5 +1568,822 @@ public class GUIPrincipal {
 		//FIN BOTON AGREGAR VIDEOJUEGO
 		
 		
-	}	
+		// ------------------------------------------- AGREGAR USUARIOS--------------------------
+		
+		
+		// BOTON OPCION AGREGAR USUARIOS ----- MENU PRINCIPAL 
+		
+		btnOpcionAgregarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Ocultar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(false);
+				
+				// Mostrar elementos Agregar usuarios - reiniciar variables y componentes
+				
+				lPanelAgregarUsuario.setVisible(true);
+				lblPreguntas.setText("Que el juego tenga caos,destruccion, adrenalina, armas y/o emociones intensas:"); // pregunta: Accion
+				btnAnteriorPregunta.setVisible(false);
+				
+				contadorPreguntas = 0;
+				respPregunta1Accion = 0;
+				respPregunta2Social = 0;
+				respPregunta3Maestria = 0;
+				respPregunta4Logros = 0;
+				respPregunta5Creatividad = 0;
+				respPregunta6Inmersion = 0;
+				
+				progresoBarraPreguntas = 0;
+				barraDeProgresoPreguntas.setValue(progresoBarraPreguntas);
+			}
+		});
+		
+		// BOTON CANCELAR AGREGAR USUARIOS
+		
+		btnCancelarAgregarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Mostrar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(true);
+				
+				// Ocultar elementos Agregar Videojuego
+				
+				lPanelAgregarUsuario.setVisible(false);
+				grupoOpcionImportacia.clearSelection();
+				grupoOpcionGenero.clearSelection();
+				
+				txtVideojuegoFav1.setSelectedItem(null);
+				txtVideojuegoFav2.setSelectedItem(null);
+				txtVideojuegoFav3.setSelectedItem(null);
+				
+				txtVideojuegoDisf1.setSelectedItem(null);
+				txtVideojuegoDisf2.setSelectedItem(null);
+				txtVideojuegoDisf3.setSelectedItem(null);
+				
+			}
+		});
+
+		// BOTON SIGUIENTE PREGUNTA
+		
+		btnSiguientePregunta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int existeError = 0;
+				
+				//Pregunta 1 - Motivacion Accion
+				
+				if (contadorPreguntas == 0) {
+					
+					//Obtener respuesta
+					
+					if (rdbNadaImportante.isSelected()==true) 
+						respPregunta1Accion = 20;
+					
+					if (rdbAlgoImportante.isSelected()==true)
+						respPregunta1Accion = 40;
+					
+					if (rdbImportante.isSelected()==true)
+						respPregunta1Accion = 60;
+					
+					if (rdbBastanteImportante.isSelected()==true)
+						respPregunta1Accion = 80;
+					
+					if (rdbExtremadamenteImportante.isSelected()==true)
+						respPregunta1Accion = 100;
+					
+					if (respPregunta1Accion == 0)
+						existeError = 1;
+				}
+				
+				//Pregunta 2 - Motivacion Social
+				
+				if (contadorPreguntas == 1) {
+					
+					//Obtener respuesta
+					
+					if (rdbNadaImportante.isSelected()==true) 
+						respPregunta2Social = 20;
+					
+					if (rdbAlgoImportante.isSelected()==true)
+						respPregunta2Social = 40;
+					
+					if (rdbImportante.isSelected()==true)
+						respPregunta2Social = 60;
+					
+					if (rdbBastanteImportante.isSelected()==true)
+						respPregunta2Social = 80;
+					
+					if (rdbExtremadamenteImportante.isSelected()==true)
+						respPregunta2Social = 100;
+					
+					if (respPregunta2Social == 0)
+						existeError = 1;
+				}
+				
+				
+				//Pregunta 3 - Motivacion Maestria
+				
+				if (contadorPreguntas == 2) {
+					
+					//Obtener respuesta
+					
+					if (rdbNadaImportante.isSelected()==true) 
+						respPregunta3Maestria = 20;
+					
+					if (rdbAlgoImportante.isSelected()==true)
+						respPregunta3Maestria = 40;
+					
+					if (rdbImportante.isSelected()==true)
+						respPregunta3Maestria = 60;
+					
+					if (rdbBastanteImportante.isSelected()==true)
+						respPregunta3Maestria = 80;
+					
+					if (rdbExtremadamenteImportante.isSelected()==true)
+						respPregunta3Maestria = 100;
+					
+					if (respPregunta3Maestria == 0)
+						existeError = 1;
+				}
+				
+				//Pregunta 4 - Motivacion Logros
+				
+				if (contadorPreguntas == 3) {
+					
+					//Obtener respuesta
+					
+					if (rdbNadaImportante.isSelected()==true) 
+						respPregunta4Logros = 20;
+					
+					if (rdbAlgoImportante.isSelected()==true)
+						respPregunta4Logros = 40;
+					
+					if (rdbImportante.isSelected()==true)
+						respPregunta4Logros = 60;
+					
+					if (rdbBastanteImportante.isSelected()==true)
+						respPregunta4Logros = 80;
+					
+					if (rdbExtremadamenteImportante.isSelected()==true)
+						respPregunta4Logros = 100;
+					
+					if (respPregunta4Logros == 0)
+						existeError = 1;
+				}
+				
+				//Pregunta 5 - Motivacion Creatividad
+				
+				if (contadorPreguntas == 4) {
+					
+					//Obtener respuesta
+					
+					if (rdbNadaImportante.isSelected()==true) 
+						respPregunta5Creatividad = 20;
+					
+					if (rdbAlgoImportante.isSelected()==true)
+						respPregunta5Creatividad = 40;
+					
+					if (rdbImportante.isSelected()==true)
+						respPregunta5Creatividad = 60;
+					
+					if (rdbBastanteImportante.isSelected()==true)
+						respPregunta5Creatividad = 80;
+					
+					if (rdbExtremadamenteImportante.isSelected()==true)
+						respPregunta5Creatividad = 100;
+					
+					if (respPregunta5Creatividad == 0)
+						existeError = 1;
+				}
+				
+				//Pregunta 6 - Motivacion Creatividad
+				
+				if (contadorPreguntas == 5) {
+					
+					//Obtener respuesta
+					
+					if (rdbNadaImportante.isSelected()==true) 
+						respPregunta6Inmersion = 20;
+					
+					if (rdbAlgoImportante.isSelected()==true)
+						respPregunta6Inmersion = 40;
+					
+					if (rdbImportante.isSelected()==true)
+						respPregunta6Inmersion = 60;
+					
+					if (rdbBastanteImportante.isSelected()==true)
+						respPregunta6Inmersion = 80;
+					
+					if (rdbExtremadamenteImportante.isSelected()==true)
+						respPregunta6Inmersion = 100;
+					
+					if (respPregunta6Inmersion == 0)
+						existeError = 1;
+				}
+				
+				//----
+				
+				
+				//Verificacion de error
+				
+				if (existeError == 1)
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe seleccionar un nivel de importancia como respuesta", "ERROR DE RESPUESTA A PREGUNTA", JOptionPane.ERROR_MESSAGE);
+			
+				if (existeError == 0) {
+					
+					// Actualiza el contador de preguntas y la barra de progreso
+					
+					contadorPreguntas++;
+					
+					if (contadorPreguntas != 6) {
+						progresoBarraPreguntas = progresoBarraPreguntas + 18;
+						barraDeProgresoPreguntas.setValue(progresoBarraPreguntas);
+					}
+					
+					
+					// Actualizar preguntas al usuario
+					
+					
+					// Cambiar a pregunta 2
+					
+					if (contadorPreguntas == 1) {
+						
+						// Cambiar a la siguiente pregunta: Social
+						lblPreguntas.setText("Competir, socializar, colaborar y/o relacionarse con otros jugadores:");
+						
+						// habilitar boton anterior en caso se haya pasado de la primera pregunta
+						btnAnteriorPregunta.setVisible(true);
+					}
+					
+					// Cambiar a pregunta 3
+					
+					if (contadorPreguntas == 2) {
+						
+						// Cambiar a la siguiente pregunta: Maestria
+						lblPreguntas.setText("Que los juegos requieran habilidad, planeacion y decisiones importantes");
+					}
+					
+					// Cambiar a pregunta 4
+					
+					if (contadorPreguntas == 3) {
+						
+						// Cambiar a la siguiente pregunta: Logros
+						lblPreguntas.setText("Completar todo lo que el juego ofrece: desfios, Coleccionables, personajes, etc");
+					}
+					
+					// Cambiar a pregunta 5
+					
+					if (contadorPreguntas == 4) {
+						
+						// Cambiar a la siguiente pregunta: Creatividad
+						lblPreguntas.setText("Descubrir los limites del juego: que pasaría si..., customizar entornos, personajes");
+					}
+					
+					// Cambiar a pregunta 6
+					
+					if (contadorPreguntas == 5) {
+						
+						// Cambiar a la siguiente pregunta: Inmersion
+						lblPreguntas.setText("Ser alguien más, fundirse con el personaje, juegos con trasfondo e historia entrañable");
+						btnSiguientePregunta.setLabel("Finalizar");
+					}
+					
+					
+					// Pregrunta final sin cambio solo actualizacion de progreso e inhabilitar boton siguiente pregunta
+					
+					if (contadorPreguntas == 6) {
+						progresoBarraPreguntas = 100;
+						barraDeProgresoPreguntas.setValue(progresoBarraPreguntas);
+						btnSiguientePregunta.setVisible(false);
+					}
+					
+					// Limpiar selecciones
+					grupoOpcionImportacia.clearSelection();
+				}	
+				
+				// Verificar output boton siguiente pregunta
+				
+				
+				
+				/*System.out.println("contador de preguntas "+contadorPreguntas);
+				System.out.println("progreso barra " + progresoBarraPreguntas);
+				System.out.println("respuesta1 Accion " + respPregunta1Accion);
+				System.out.println("respuesta2 Social " + respPregunta2Social);
+				System.out.println("respuesta3 Maestria " + respPregunta3Mestria);
+				System.out.println("respuesta4 Logros " + respPregunta4Logros);
+				System.out.println("respuesta5 Creatividad " + respPregunta5Creatividad);
+				System.out.println("respuesta6 Inmersion " + respPregunta6Inmersion);
+				System.out.println("");*/
+				 
+			}
+		});
+		
+		// BOTON PREGUNTA ANTERIOR
+		
+		btnAnteriorPregunta.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				// Limpiar selecciones
+				grupoOpcionImportacia.clearSelection();
+				
+				// Actualiza el contador de preguntas y el contador de la barra de progreso
+				
+				contadorPreguntas--;
+				
+				if (contadorPreguntas != 5) {
+					progresoBarraPreguntas = progresoBarraPreguntas - 18;
+				}
+				
+				// Actualizar preguntas a usuario
+				
+				
+				// Cambiar a pregunta 1
+				if (contadorPreguntas == 0) {	
+					// Cambiar a la siguiente pregunta: Accion
+					lblPreguntas.setText("Que el juego tenga caos,destruccion, adrenalina, armas y/o emociones intensas:");
+					respPregunta1Accion = 0;
+					
+					// Deshabilita el boton pregunta anterior en caso de estar en la primera pregunta  
+					btnAnteriorPregunta.setVisible(false);
+				}
+				
+				// Cambiar a pregunta 2
+				if (contadorPreguntas == 1) {
+					
+					// Cambiar a la siguiente pregunta: Social
+					lblPreguntas.setText("Competir, socializar, colaborar y/o relacionarse con otros jugadores:");
+					respPregunta2Social = 0;
+					
+					// habilitar boton anterior en caso se haya pasado de la primera pregunta
+					btnAnteriorPregunta.setVisible(true);
+				}
+				
+				// Cambiar a pregunta 3
+				
+				if (contadorPreguntas == 2) {
+					
+					// Cambiar a la siguiente pregunta: Maestria
+					lblPreguntas.setText("Que los juegos requieran habilidad, planeacion y decisiones importantes");
+					respPregunta3Maestria = 0;
+				}
+				
+				// Cambiar a pregunta 4
+				
+				if (contadorPreguntas == 3) {
+					
+					// Cambiar a la siguiente pregunta: Logros
+					lblPreguntas.setText("Completar todo lo que el juego ofrece: desfios, Coleccionables, personajes, etc");
+					respPregunta4Logros = 0;
+				}
+				
+				// Cambiar a pregunta 5
+				
+				if (contadorPreguntas == 4) {
+					
+					btnSiguientePregunta.setLabel("Siguiente");
+					
+					// Cambiar a la siguiente pregunta: Creatividad
+					lblPreguntas.setText("Descubrir los limites del juego: que pasaría si..., customizar entornos, personajes");
+					respPregunta5Creatividad = 0;
+				}
+				
+				// Cambiar a pregunta 6
+				if (contadorPreguntas == 5) {
+					
+					respPregunta6Inmersion = 0;
+					
+					progresoBarraPreguntas = progresoBarraPreguntas - 10;
+					
+					// Habilita el boton siguiente pregunta en caso estar antes de la ultima pregunta
+					
+					btnSiguientePregunta.setVisible(true);
+					
+					
+				}
+				
+				// Actualiza la barra de progreso
+				barraDeProgresoPreguntas.setValue(progresoBarraPreguntas);
+			}
+		});
+		
+		// BOTON AGREGAR USUARIO
+		
+		btnAgregarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int existeError = 0;
+
+				
+				
+				// Nombre
+				
+				String nombreDelUsuario = null;
+				
+				nombreDelUsuario = txtNombre.getText();
+				
+				if (nombreDelUsuario.equals("")==true) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe ingresar un nombre", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				// Edad
+				
+				int edadUsuario = 0;
+				
+				try {
+					edadUsuario = Integer.parseInt(txtEdadUsuario.getText());
+				}
+				
+				catch (Exception s) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe ingresar una edad valida", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				// Genero
+				
+				String generoUsuario = null;
+				
+				if (rdbMasculino.isSelected() == true)
+					generoUsuario = "Masculino";
+				
+				if (rdbFemenino.isSelected() == true)
+					generoUsuario = "Femenino";
+				
+				if (generoUsuario == null) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe seleccionar un género", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				// Videojuegos Favoritos
+				
+				String juegoFav1 = null;
+				String juegoFav2 = null;
+				String juegoFav3 = null;
+				
+				try {
+				
+				juegoFav1 = txtVideojuegoFav1.getSelectedItem().toString();
+				juegoFav2 = txtVideojuegoFav2.getSelectedItem().toString();
+				juegoFav3 = txtVideojuegoFav3.getSelectedItem().toString();
+				}
+				
+				catch (Exception s) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe ingresar tres videojuegos favoritos", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				// Videojuegos recientemente disfrutados
+				
+				String juegoDis1 = null;
+				String juegoDis2 = null;
+				String juegoDis3 = null;
+				
+				try {
+				juegoDis1 = txtVideojuegoDisf1.getSelectedItem().toString();
+				juegoDis2 = txtVideojuegoDisf2.getSelectedItem().toString();
+				juegoDis3 = txtVideojuegoDisf3.getSelectedItem().toString();
+				}
+				
+				catch (Exception s) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe ingresar tres videojuegos que haya disfrutado", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				//Nombre de Usuario y contraseña
+
+				String nombreUsuario = null;
+				String passwordUsuario = null;
+				
+				nombreUsuario = txtNombreUsuario.getText();
+				passwordUsuario = txtContraseña.getText();
+				
+				if (nombreUsuario.equals("") == true|| passwordUsuario.equals("") == true) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "Debe ingresar un usuario y una contraseña", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				// Verificar existencia nombre usuario
+				
+				Node verificarExistenciaUsuario = null;
+				
+				try (Transaction tx = graphDb.beginTx()) {
+				
+				if (nombreUsuario.equals("") == false) {
+				verificarExistenciaUsuario = graphDb.findNode(Denominaciones.USUARIO, "USER", nombreUsuario);
+				
+				
+				if (verificarExistenciaUsuario != null) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "El nombre de usuario no se encuentra disponible, use otro", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				}
+				
+				if (existeError == 0) {
+					
+					operaciones.agregarUsuario(graphDb, nombreDelUsuario, edadUsuario, generoUsuario, juegoFav1, juegoFav2, juegoFav3, juegoDis1, juegoDis2, juegoDis3,
+							edadUsuario, edadUsuario, edadUsuario, edadUsuario, existeError, edadUsuario, nombreUsuario, passwordUsuario);
+					
+					JOptionPane.showMessageDialog(lPanelAgregarUsuario, "El usuario se ha agregado con exito", "INGRESO", JOptionPane.INFORMATION_MESSAGE);
+				
+					// Limpiar 
+					
+			
+					txtNombre.setText("");
+					txtNombreUsuario.setText("");
+					
+					txtEdadUsuario.setText("");
+					txtpasswordField.setText("");
+					
+					grupoOpcionImportacia.clearSelection();
+					grupoOpcionGenero.clearSelection();
+					
+					txtVideojuegoFav1.setSelectedItem(null);
+					txtVideojuegoFav2.setSelectedItem(null);
+					txtVideojuegoFav3.setSelectedItem(null);
+					
+					txtVideojuegoDisf1.setSelectedItem(null);
+					txtVideojuegoDisf2.setSelectedItem(null);
+					txtVideojuegoDisf3.setSelectedItem(null);
+				
+				}
+				
+				tx.success();
+				}
+				
+				// Prueba output igresar usuario
+				
+				/*System.out.println("Nombre usuario "+ nombreDelUsuario);
+				System.out.println("Edad "+ edadUsuario);
+				System.out.println("Genero "+ generoUsuario);
+				
+				System.out.println("JFav1 "+ juegoFav1);
+				System.out.println("JFav2 "+ juegoFav2);
+				System.out.println("JFav3 "+ juegoFav3);
+				
+				System.out.println("JDis1 "+ juegoDis1);
+				System.out.println("JDis2 "+ juegoDis2);
+				System.out.println("JDis3 "+ juegoDis3);
+				
+				System.out.println("user " + nombreUsuario);
+				System.out.println("Password "+ passwordUsuario);*/
+			}
+		});
+		
+		// Fin agregar usuario
+		
+		
+		// ------------------------------------------- OBTENER RECOMENDACION --------------------------
+		
+		// BOTON OPCION OBTENER RECOMENDACION
+		btnOpcionRecomendacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Ocultar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(false);
+				
+				// Mostra elementos Obtener Recomendacion
+				
+				lPanelObtenerRecomendacion.setVisible(true);
+				
+				if (chAjustarPreferencias.isSelected()==false) {
+					
+					rdbAntiguosRecomendacion.setEnabled(false);
+					rdbSemiRecientesRecomendacion.setEnabled(false);
+					rdbRecientesRecomendacion.setEnabled(false);
+					
+					rdbNoTanPopularesRecomendacion.setEnabled(false);
+					rdbPopularesRecomendacion.setEnabled(false);
+					
+				}
+				
+			}
+		});
+	
+		// BOTON CANCELAR OBTENER RECOMENDACION
+		btnCancelarRecomendacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				// Mostrar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(true);
+				
+				// Ocultar elementos Obtener Recomendacion
+				
+				lPanelObtenerRecomendacion.setVisible(false);
+				grupoRangoDeLanzamiento.clearSelection();
+				grupoPopularidadRecomendaciones.clearSelection();
+				txtUserRecomendacion.setText("");
+				txtpasswordField.setText("");
+				
+			}
+		});
+		// ESTADO CHECKBOX 
+		
+		chAjustarPreferencias.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				
+				if (chAjustarPreferencias.isSelected()== false) {
+					
+					rdbAntiguosRecomendacion.setEnabled(false);
+					rdbSemiRecientesRecomendacion.setEnabled(false);
+					rdbRecientesRecomendacion.setEnabled(false);
+					
+					rdbNoTanPopularesRecomendacion.setEnabled(false);
+					rdbPopularesRecomendacion.setEnabled(false);
+				}
+				
+				if (chAjustarPreferencias.isSelected()== true) {
+					
+					rdbAntiguosRecomendacion.setEnabled(true);
+					rdbSemiRecientesRecomendacion.setEnabled(true);
+					rdbRecientesRecomendacion.setEnabled(true);
+					
+					rdbNoTanPopularesRecomendacion.setEnabled(true);
+					rdbPopularesRecomendacion.setEnabled(true);
+				}
+				
+			}
+		});
+		
+		
+		// BOTON OBTENER RECOMENDACION
+		btnObtenerRecomendacion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				int existeError = 0;
+				
+				// Estado ajustar preferencias
+				
+				int estadoAjustarPreferencias = 0;
+						
+					if (chAjustarPreferencias.isSelected()==true) {
+						estadoAjustarPreferencias = 1;
+					}
+				
+				// 
+				
+				// User y password
+				
+				String userRecomendacion = txtUserRecomendacion.getText();
+				String passRecomendacion = txtpasswordField.getText();
+				
+				if (userRecomendacion.equals("") == true || passRecomendacion.equals("") == true) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelObtenerRecomendacion, "Debe ingresar un usuario y una contraseña", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				// Rango de lanzamiento
+				
+				if (estadoAjustarPreferencias == 1) {
+				
+					String rangoLanzamiento = null;
+				
+					if (rdbAntiguosRecomendacion.isSelected()==true)
+						rangoLanzamiento = "Antiguos";
+				
+					if (rdbSemiRecientesRecomendacion.isSelected()==true)
+						rangoLanzamiento = "Semi-Recientes";
+				
+					if (rdbRecientesRecomendacion.isSelected()==true)
+						rangoLanzamiento = "Recientes";
+				
+					if (rangoLanzamiento == null) {
+						existeError = 1;
+						JOptionPane.showMessageDialog(lPanelObtenerRecomendacion, "Debe seleccionar un rango de lanzamiento", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				}
+				
+				// Rango de popularidad
+				
+				if (estadoAjustarPreferencias == 1) {
+					
+					String popularidadRecomendaciones = null;
+					
+					if (rdbNoTanPopularesRecomendacion.isSelected() == true)
+						popularidadRecomendaciones = "NoTanPopulares";
+					
+					if (rdbPopularesRecomendacion.isSelected() == true)
+						popularidadRecomendaciones = "Populares";
+					
+					if (popularidadRecomendaciones == null){
+						existeError = 1;
+						JOptionPane.showMessageDialog(lPanelObtenerRecomendacion, "Debe seleccionar un rango de popularidad", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				
+				// VALIDAR USER Y PASSWORD
+				
+				if (userRecomendacion.equals("") == false && passRecomendacion.equals("") == false) {
+				
+				try (Transaction tx = graphDb.beginTx()) {
+				
+				Node validarUsuario = graphDb.findNode(Denominaciones.USUARIO, "USER", userRecomendacion);
+				
+				if (validarUsuario == null) {
+					existeError =1;
+					JOptionPane.showMessageDialog(lPanelObtenerRecomendacion, "Nombre de usuario incorrecto/inexistente verifique el igreso", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				else {
+					
+					String validarPassword = null;
+					
+					validarPassword = validarUsuario.getProperty("PASSWORD").toString();
+					
+					if (passRecomendacion.equals(validarPassword) == false) {
+						existeError =1;
+						JOptionPane.showMessageDialog(lPanelObtenerRecomendacion, "Contraseña incorrecto/inexistente verifique el igreso", "ERROR DE INGRESO", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+				
+				tx.success();
+					}
+				}
+				
+				// FIN VALIDAR USER Y PASSWORD
+				
+				
+				//Obtener recomendacion
+				
+				if (existeError == 0) {
+					
+				}
+				
+			}
+		});
+		
+		// ------------------------------------------- ELIMINAR VIDEOJUEGO --------------------------
+		
+		
+		// BOTON OPCION ELIMINAR VIDEOJUEGO
+		btnOpcionEliminarVideojuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				// Ocultar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(false);
+				
+				// Mostrar elementos Eliminar videojuego
+				
+				lPanelEliminarVideojuego.setVisible(true);
+				
+			}
+		});
+			
+		// BOTON CANCELAR ELIMINAR VIDEOJUEGO
+		btnCancelarEliminarVideojuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				// Mostrar elementos Menu Principal
+				
+				lPanelMenuPrincipal.setVisible(true);
+				
+				// Ocultar elementos Eliminar videojuego
+				
+				lPanelEliminarVideojuego.setVisible(false);
+				txtTituloVideojuegoEliminar.setSelectedItem(null);
+			}
+		});
+		
+		// BOTON ELIMINAR VIDEOJUEGO
+		btnEliminarVideojuego.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int existeError = 0;
+				String tituloVideojuegoEliminar = null;
+				
+				try {
+				tituloVideojuegoEliminar = txtTituloVideojuegoEliminar.getSelectedItem().toString();
+				}
+				
+				catch (Exception s) {
+					existeError = 1;
+					JOptionPane.showMessageDialog(lPanelEliminarVideojuego, "Debe ingresar/seleccionar un titulo", "ERROR DE ELIMINACION", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				if (existeError == 0 ) {
+					operaciones.eliminarVideoJuego(graphDb, tituloVideojuegoEliminar, lPanelEliminarVideojuego);
+					
+					// Actualizar lista de videojuegos
+					
+					
+					AutoCompleteSupport.install(txtTituloVideojuegoEliminar, operaciones.ListaVideojuegos(graphDb));
+				}
+			}
+		});
+	}
+	
+	public EventList<String> actualizarListaTitulos(GraphDatabaseService graphDb , OperacionesDb operaciones, EventList<String> listaTitulos){
+		
+		listaTitulos = operaciones.ListaVideojuegos(graphDb);
+		
+		return listaTitulos;
+	}
 }

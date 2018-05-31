@@ -2,11 +2,11 @@ package com.calewaert.proyecto2.Proyecto2;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
@@ -14,6 +14,9 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.ResourceIterator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.EventList;
 
 /**
  * Hello world!
@@ -170,6 +173,8 @@ public class OperacionesDb
 	 }
 	 // ------- FIN -------
 	 
+	 
+	 
 	// --------------------------------------------- ELIMINAR VIDEOJUEGO -------------------------------------------------------------
 	 
 	 public void eliminarVideoJuego(GraphDatabaseService graphDb, String tituloVideojuego, JLayeredPane lPanelEliminarVideojuego) {
@@ -178,9 +183,16 @@ public class OperacionesDb
 		 
 		 Node videojuego = graphDb.findNode(Denominaciones.VIDEOJUEGO, "TITULO", tituloVideojuego);
 		 
-		 
-		 
 		 if (videojuego != null) {
+			 
+			 // Eliminar relaciones
+			 Iterator<Relationship> relaciones = videojuego.getRelationships().iterator();
+			 
+			 while (relaciones.hasNext() == true) {
+				 relaciones.next().delete();
+			 }
+			 
+			 // Eliminar Videojuego
 			 videojuego.delete();
 			 JOptionPane.showMessageDialog(lPanelEliminarVideojuego, "El videojuego se ha eliminado con exito", "ELIMINACION", JOptionPane.INFORMATION_MESSAGE);
 		 }
@@ -193,6 +205,120 @@ public class OperacionesDb
 	 }
 	 
 	 }
+	// ------- FIN -------
 	 
+	// --------------------------------------------- AGREGAR USUARIO -------------------------------------------------------------
 	 
+	 public void agregarUsuario(GraphDatabaseService graphDb, String nombre, int edad, String genero, String juegoFav1, String juegoFav2, String juegoFav3,
+			 String juegoDis1, String juegoDis2, String juegoDis3, int respPregunta1Accion, int respPregunta2Social, int respPregunta3Maestria, int respPregunta4Logros,
+			 int respPregunta5Creatividad, int respPregunta6Inmersion, String nombreUsuario, String passwordUsuario) {
+		 
+		 Node usuario = graphDb.createNode(Denominaciones.USUARIO);
+		
+		 // Datos usuario
+		 usuario.setProperty("NOMBRE", nombre);
+		 usuario.setProperty("EDAD", edad);
+		 usuario.setProperty("GÉNERO", genero);
+		 
+		 // Datos cuenta user
+		 usuario.setProperty("USER", nombreUsuario);
+		 usuario.setProperty("PASSWORD", passwordUsuario);
+		 
+		 // Juegos favoritos y disfrutados
+		 usuario.setProperty("JUEGO FAVORITO 1", juegoFav1);
+		 usuario.setProperty("JUEGO FAVORITO 2", juegoFav2);
+		 usuario.setProperty("JUEGO FAVORITO 3", juegoFav3);
+		 
+		 usuario.setProperty("JUEGO DISFRUTADO 1", juegoDis1);
+		 usuario.setProperty("JUEGO DISFRUTADO 2", juegoDis2);
+		 usuario.setProperty("JUEGO DISFRUTADO 3", juegoDis3);
+		 
+		 // Creacion de relaciones hacia motivaciones
+		 
+		 
+		 // Motivacion Accion
+		 Relationship usuarioMotivacionAccion = usuario.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", "Accion"), Relaciones.AFINIDAD);
+		 usuarioMotivacionAccion.setProperty("NIVEL DE AFINIDAD", respPregunta1Accion);
+		 
+		 // Motivacion Social
+		 Relationship usuarioMotivacionSocial = usuario.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", "Social"), Relaciones.AFINIDAD);
+		 usuarioMotivacionSocial.setProperty("NIVEL DE AFINIDAD", respPregunta2Social);
+		
+		 // Motivacion Maestria
+		 Relationship usuarioMotivacionMestria = usuario.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", "Maestria"), Relaciones.AFINIDAD);
+		 usuarioMotivacionMestria.setProperty("NIVEL DE AFINIDAD", respPregunta3Maestria);
+		 
+		 // Motivacion Logros
+		 Relationship usuarioMotivacionLogros = usuario.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", "Logros"), Relaciones.AFINIDAD);
+		 usuarioMotivacionLogros.setProperty("NIVEL DE AFINIDAD", respPregunta4Logros);
+		 
+		 // Motivacion Creatividad
+		 Relationship usuarioMotivacionCreatividad = usuario.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", "Creatividad"), Relaciones.AFINIDAD);
+		 usuarioMotivacionCreatividad.setProperty("NIVEL DE AFINIDAD", respPregunta5Creatividad);
+		 
+		 // Motivacion Inmersion
+		 Relationship usuarioMotivacionInmersion = usuario.createRelationshipTo(graphDb.findNode(Denominaciones.MOTIVACION, "NOMBRE", "Maestria"), Relaciones.AFINIDAD);
+		 usuarioMotivacionInmersion.setProperty("NIVEL DE AFINIDAD", respPregunta6Inmersion);
+		 
+		 //--- FIN
+	 }
+	 
+	// --------------------------------------------- ELIMINAR USUARIO -------------------------------------------------------------
+	 
+		 public void eliminarUsuario(GraphDatabaseService graphDb, String nombreUsuario, String passwordUsuario, JLayeredPane lPanelEliminarUsuario) {
+			
+			 try (Transaction tx = graphDb.beginTx()) {
+			 
+			 Node usuario = graphDb.findNode(Denominaciones.USUARIO, "USER", nombreUsuario);
+			 
+			String verificacionPassword = (String) usuario.getProperty("PASSWORD");
+			 
+			 if (usuario != null) {
+				 usuario.delete();
+				 JOptionPane.showMessageDialog(lPanelEliminarUsuario, "El usuario se ha eliminado con exito", "ELIMINACION", JOptionPane.INFORMATION_MESSAGE);
+			 }
+				 
+			 
+			 if (usuario == null)
+				 JOptionPane.showMessageDialog(lPanelEliminarUsuario, "No se ha encontrado el usuario, verifique los datos", "ELIMINACION", JOptionPane.ERROR_MESSAGE);
+			
+			 tx.success();
+		 }
+		 
+		 }
+		// ------- FIN -------
+		 
+		// --------------------------------------------- DEVOLVER LISTA DE VIDEOJUEGOS -------------------------------------------------------------
+		 
+		 public EventList<String> ListaVideojuegos(GraphDatabaseService graphDb) {
+			 
+			 EventList<String> eventlistaTitulos = new BasicEventList<String>();
+			
+			 try (Transaction tx = graphDb.beginTx()) {
+				 
+			 
+			 
+			ArrayList<String> listaTitulosExistentes = new ArrayList<>();
+			 
+			ResourceIterator<Node> nodosVideojuegos = graphDb.findNodes(Denominaciones.VIDEOJUEGO);
+			
+			while (nodosVideojuegos.hasNext() != false) {
+				
+			listaTitulosExistentes.add((String) nodosVideojuegos.next().getProperty("TITULO"));
+				
+			}	
+			
+			for (int i=0; i < listaTitulosExistentes.size(); i++) {
+				
+				eventlistaTitulos.add(listaTitulosExistentes.get(i));
+				
+			}
+			
+			 
+			tx.success();
+			
+			 }
+			 return eventlistaTitulos; 
+		 }
+		 
 }
