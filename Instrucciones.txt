@@ -1,0 +1,6 @@
+- Requerrimientos : 
+	tener instalado Java
+
+- Uso:
+	Descargar la carpeta tal cual
+	Ejecutar el archivo GUIPrincipal

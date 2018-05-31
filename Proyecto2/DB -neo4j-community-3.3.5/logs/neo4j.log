@@ -1,9 +1,9 @@
 
-2018-05-25 12:09:04 Commons Daemon procrun stdout initialized
-2018-05-25 18:09:05.248+0000 INFO  ======== Neo4j 3.3.5 ========
-2018-05-25 18:09:05.272+0000 INFO  Starting...
-2018-05-25 18:09:06.255+0000 INFO  Bolt enabled on 127.0.0.1:7687.
-2018-05-25 18:09:09.722+0000 INFO  Started.
-2018-05-25 18:09:10.727+0000 INFO  Remote interface available at http://localhost:7474/
-2018-05-26 03:42:00.276+0000 INFO  Stopping...
-2018-05-26 03:42:01.186+0000 INFO  Stopped.
+2018-05-30 21:57:08 Commons Daemon procrun stdout initialized
+2018-05-31 03:57:09.062+0000 INFO  ======== Neo4j 3.3.5 ========
+2018-05-31 03:57:09.091+0000 INFO  Starting...
+2018-05-31 03:57:10.180+0000 INFO  Bolt enabled on 127.0.0.1:7687.
+2018-05-31 03:57:13.604+0000 INFO  Started.
+2018-05-31 03:57:14.667+0000 INFO  Remote interface available at http://localhost:7474/
+2018-05-31 03:59:44.340+0000 INFO  Stopping...
+2018-05-31 03:59:45.595+0000 INFO  Stopped.
